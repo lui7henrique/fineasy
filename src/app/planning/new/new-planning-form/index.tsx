@@ -8,9 +8,9 @@ import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { toast } from '@/components/ui/use-toast'
 
-import { NewPlainFormValue } from './new-plain-form-value'
-import { NewPlainFormTime } from './new-plain-form-time'
-import { NewPlainFormInflationSelect } from './new-plain-form-inflation-select'
+import { NewPlanningFormValue } from './new-planning-form-value'
+import { NewPlanningFormTime } from './new-planning-form-time'
+import { NewPlanningFormInflationSelect } from './new-planning-form-inflation-select'
 
 const FormSchema = z.object({
   value: z.string({ required_error: 'Insira um valor válido.' }).refine(
@@ -56,12 +56,12 @@ export function NewPlainForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-6 py-6"
       >
-        <div className="grid grid-cols-[2fr_1fr] gap-6">
-          <NewPlainFormValue />
-          <NewPlainFormTime />
+        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6">
+          <NewPlanningFormValue />
+          <NewPlanningFormTime />
         </div>
 
-        <NewPlainFormInflationSelect />
+        <NewPlanningFormInflationSelect />
 
         <Button type="submit">Calcular</Button>
       </form>

@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-export const NewPlainFormTime = () => {
+export const NewPlanningFormTime = () => {
   const form = useFormContext()
 
   return (

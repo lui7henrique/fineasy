@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-export const NewPlainFormValue = () => {
+export const NewPlanningFormValue = () => {
   const [isAccumulatedValue, setIsAccumulatedValue] = useState(false)
 
   const form = useFormContext()

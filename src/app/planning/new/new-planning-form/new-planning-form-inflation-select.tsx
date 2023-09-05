@@ -11,7 +11,7 @@ import {
   FormLabel,
 } from '@/components/ui/form'
 
-export const NewPlainFormInflationSelect = () => {
+export const NewPlanningFormInflationSelect = () => {
   const form = useFormContext()
 
   return (
