@@ -54,7 +54,7 @@ export function NewPlainForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-6 py-6 max-w-6xl mx-auto"
+        className="w-full space-y-6 py-6"
       >
         <div className="grid grid-cols-[2fr_1fr] gap-6">
           <NewPlainFormValue />
