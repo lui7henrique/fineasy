@@ -5,20 +5,26 @@ import { z } from 'zod'
 
 const investmentSchema = z.number().positive()
 const investmentTimeSchema = z.number().positive()
+const investmentDateSchema = z.date()
 
 export async function POST(request: Request) {
   try {
-    const { investment, investmentTimeInMonths } = await request.json()
+    const { investment, investmentTimeInMonths, investmentDate } =
+      await request.json()
 
     const parsedInvestment = investmentSchema.parse(investment)
     const parsedInvestmentTime = investmentTimeSchema.parse(
       investmentTimeInMonths,
     )
+    const parsedInvestmentDate = investmentDateSchema.parse(
+      new Date(investmentDate),
+    )
 
     const returns = await calculateMonthlyReturns(
       parsedInvestment,
       parsedInvestmentTime,
-      115,
+      100,
+      parsedInvestmentDate,
     )
 
     return NextResponse.json(returns)
@@ -26,7 +32,7 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({
         error:
-          'Invalid input. Please provide valid investment and investmentTime',
+          'Invalid input. Please provide valid investment, investmentTime and investmentDate',
       })
     } else {
       return NextResponse.json({ error: 'Internal server error' })

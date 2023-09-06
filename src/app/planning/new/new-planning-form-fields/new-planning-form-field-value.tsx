@@ -14,16 +14,17 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { NewPlanningFormType } from '../new-planning-form'
 
-export const NewPlanningFormValue = () => {
+export const NewPlanningFormFieldValue = () => {
   const [isAccumulatedValue, setIsAccumulatedValue] = useState(false)
 
-  const form = useFormContext()
+  const form = useFormContext<NewPlanningFormType>()
 
   return (
     <FormField
       control={form.control}
-      name="value"
+      name="investment"
       render={({ field }) => (
         <FormItem>
           <FormLabel>
@@ -37,6 +38,7 @@ export const NewPlanningFormValue = () => {
               <Button
                 variant="outline"
                 size="icon"
+                type="button"
                 onClick={() =>
                   setIsAccumulatedValue(
                     (prevAccumulatedValue) => !prevAccumulatedValue,

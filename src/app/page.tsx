@@ -35,7 +35,7 @@ export default function Home() {
         </PageHeaderDescription>
 
         <div className="flex w-full items-center space-x-4 pb-8 pt-4 md:pb-10">
-          <Link href="/plain/new" className={cn(buttonVariants())}>
+          <Link href="/planning/new" className={cn(buttonVariants())}>
             Crie um planejamento
           </Link>
           {/* <Link

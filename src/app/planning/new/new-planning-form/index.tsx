@@ -1,70 +1,89 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import { useState } from 'react'
 
-import { Button } from '@/components/ui/button'
+import { DataTable } from '../new-planning-preview/components/data-table'
+import { columns } from '../new-planning-preview/components/columns'
+import { NewPlanningFormFields } from '../new-planning-form-fields'
+
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Form } from '@/components/ui/form'
+
+import { FormSchema } from '../schema'
+import { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
+import { api } from '@/services/api'
 import { toast } from '@/components/ui/use-toast'
 
-import { NewPlanningFormValue } from './new-planning-form-value'
-import { NewPlanningFormTime } from './new-planning-form-time'
-import { NewPlanningFormInflationSelect } from './new-planning-form-inflation-select'
+export type NewPlanningFormType = z.infer<typeof FormSchema>
 
-const FormSchema = z.object({
-  value: z.string({ required_error: 'Insira um valor válido.' }).refine(
-    (value) => {
-      const parsedValue = parseFloat(value)
-      return !isNaN(parsedValue) && parsedValue >= 1
-    },
-    {
-      message: 'O valor deve ser um número válido e maior ou igual a 1.',
-    },
-  ),
-  timeInMonths: z.string({ required_error: 'Insira um valor válido.' }).refine(
-    (value) => {
-      const parsedValue = parseFloat(value)
-      return !isNaN(parsedValue) && parsedValue >= 1
-    },
-    {
-      message: 'O valor deve ser um número válido e maior ou igual a 1.',
-    },
-  ),
-  inflation: z.boolean().default(false).optional(),
-})
+export const NewPlanningForm = () => {
+  const [newPlanning, setNewPlanning] = useState<
+    MonthlyInvestmentInfo[] | null
+  >(null)
 
-export function NewPlainForm() {
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<NewPlanningFormType>({
     resolver: zodResolver(FormSchema),
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+  async function onSubmit(form: NewPlanningFormType) {
+    const getFormattedInvestment = () => {
+      const multiplier: Record<NewPlanningFormType['timeMetric'], number> = {
+        decades: 10 * 12,
+        months: 1,
+        years: 12,
+      }
+
+      return form.investmentTime * multiplier[form.timeMetric]
+    }
+
+    const formattedData = {
+      investment: form.investment,
+      investmentTimeInMonths: getFormattedInvestment(),
+      investmentDate: new Date().toISOString(),
+    }
+
+    try {
+      const response = await api.post<MonthlyInvestmentInfo[]>(
+        '/planning',
+        formattedData,
+      )
+
+      setNewPlanning(response.data)
+
+      toast({
+        title: 'You submitted the following values:',
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 max-h-80 overflow-y-scroll">
+            <code className="text-white">
+              {JSON.stringify(response.data, null, 2)}
+            </code>
+          </pre>
+        ),
+      })
+    } catch {}
+    // toast({
+    //   title: 'You submitted the following values:',
+    //   description: (
+    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+    //     </pre>
+    //   ),
+    // })
   }
+
+  console.log({ newPlanning })
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-6 py-6"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6">
-          <NewPlanningFormValue />
-          <NewPlanningFormTime />
-        </div>
+      <div className="max-w-app space-y-4 mx-auto px-4">
+        <form className="" onSubmit={form.handleSubmit(onSubmit)}>
+          <NewPlanningFormFields />
+        </form>
 
-        <NewPlanningFormInflationSelect />
-
-        <Button type="submit">Calcular</Button>
-      </form>
+        {newPlanning && <DataTable data={newPlanning} columns={columns} />}
+      </div>
     </Form>
   )
 }
