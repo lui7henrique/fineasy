@@ -47,7 +47,6 @@ export const NewPlanningFormFieldTime = () => {
                     <SelectContent>
                       <SelectItem value="months">Meses</SelectItem>
                       <SelectItem value="years">Anos</SelectItem>
-                      <SelectItem value="decades">Décadas</SelectItem>
                     </SelectContent>
                   </Select>
                 )}

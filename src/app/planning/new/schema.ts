@@ -26,7 +26,7 @@ export const FormSchema = z.object({
     )
     .transform((value) => Number(value)),
 
-  timeMetric: z.enum(['months', 'years', 'decades']),
+  timeMetric: z.enum(['months', 'years']),
 
   investmentDate: z.string().optional(),
 

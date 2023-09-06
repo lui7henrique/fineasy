@@ -28,7 +28,7 @@ export const NewPlanningFormFieldValue = () => {
       render={({ field }) => (
         <FormItem>
           <FormLabel>
-            {isAccumulatedValue ? 'Valor acumulado' : 'Investimento'}
+            {isAccumulatedValue ? 'Valor acumulado' : 'Investimento mensal'}
           </FormLabel>
 
           <FormControl>

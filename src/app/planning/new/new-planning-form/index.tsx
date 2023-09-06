@@ -30,7 +30,6 @@ export const NewPlanningForm = () => {
   async function onSubmit(form: NewPlanningFormType) {
     const getFormattedInvestment = () => {
       const multiplier: Record<NewPlanningFormType['timeMetric'], number> = {
-        decades: 10 * 12,
         months: 1,
         years: 12,
       }
@@ -52,37 +51,51 @@ export const NewPlanningForm = () => {
 
       setNewPlanning(response.data)
 
-      toast({
-        title: 'You submitted the following values:',
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 max-h-80 overflow-y-scroll">
-            <code className="text-white">
-              {JSON.stringify(response.data, null, 2)}
-            </code>
-          </pre>
-        ),
-      })
+      process.env.NODE_ENV === 'development' &&
+        toast({
+          title: 'You submitted the following values:',
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 max-h-80 overflow-y-scroll">
+              <code className="text-white">
+                {JSON.stringify(response.data, null, 2)}
+              </code>
+            </pre>
+          ),
+        })
     } catch {}
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // })
   }
 
   console.log({ newPlanning })
 
   return (
     <Form {...form}>
-      <div className="max-w-app space-y-4 mx-auto px-4">
+      <div className="max-w-app py-6 mx-auto px-4 space-y-6">
         <form className="" onSubmit={form.handleSubmit(onSubmit)}>
           <NewPlanningFormFields />
         </form>
 
-        {newPlanning && <DataTable data={newPlanning} columns={columns} />}
+        {newPlanning && (
+          <div className="rounded-lg border bg-background shadow h-full overflow-y-scroll max-h-[60vh]">
+            <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+              <div className="flex items-center justify-between space-y-2">
+                <div>
+                  <h2 className="text-2xl font-bold tracking-tight">
+                    Acompanhe seus rendimentos mensais
+                  </h2>
+                  <p className="text-muted-foreground">
+                    A tabela abaixo mostra o rendimento detalhado de cada mês,
+                    permitindo que você planeje com precisão seus objetivos
+                    financeiros e acompanhe seu progresso de forma transparente
+                  </p>
+                </div>
+                <div className="flex items-center space-x-2">
+                  {/* <UserNav /> */}
+                </div>
+              </div>
+              <DataTable data={newPlanning} columns={columns} />
+            </div>
+          </div>
+        )}
       </div>
     </Form>
   )
