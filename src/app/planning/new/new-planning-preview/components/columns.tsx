@@ -12,8 +12,7 @@ import { Separator } from '@/components/ui/separator'
 
 export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
   {
-    id: 'Mês',
-    accessorKey: 'accumulatedAmount',
+    accessorKey: 'investmentDate',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Mês" />
     ),
@@ -22,7 +21,9 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
         table.getState().pagination.pageSize
       }`
 
-      const label = format(new Date(row.getValue('Mês')), 'MMMM, yyyy', {
+      const value = row.getValue('investmentDate')
+
+      const label = format(new Date(value as string), 'MMMM, yyyy', {
         locale: ptBR,
       })
 
@@ -37,6 +38,8 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
         </div>
       )
     },
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     id: 'Valor investido',
