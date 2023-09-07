@@ -23,15 +23,12 @@ export function DataTableViewOptions<TData>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto hidden h-8 lg:flex"
-        >
+        <Button variant="outline" size="sm" className="flex">
           <MixerHorizontalIcon className="mr-2 h-4 w-4" />
           Visualização
         </Button>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent align="end" className="w-[170px]">
         <DropdownMenuLabel>Alterar visualização</DropdownMenuLabel>
         <DropdownMenuSeparator />
