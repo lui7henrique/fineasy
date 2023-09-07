@@ -6,42 +6,40 @@ import { DataTableColumnHeader } from './data-table-column-header'
 
 import { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
 import { formatCurrency } from '@/utils/format-currency'
-import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { Separator } from '@/components/ui/separator'
 
 export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
   {
-    id: 'select',
-    header: () => <></>,
-    cell: ({ row, table }) => {
-      return (
-        <div className="min-w-[20px]">
-          <Badge>
-            {row.index + 1}/{table.getState().pagination.pageSize}
-          </Badge>
-        </div>
-      )
-    },
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
+    id: 'Mês',
     accessorKey: 'investmentDate',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Mês" />
     ),
-    cell: ({ row }) => (
-      <div className="capitalize whitespace-nowrap">
-        {format(new Date(row.getValue('investmentDate')), 'MMMM, yyyy', {
-          locale: ptBR,
-        })}
-      </div>
-    ),
-    enableSorting: false,
-    enableHiding: false,
+    cell: ({ row, table }) => {
+      const progress = `${row.index + 1}/${
+        table.getState().pagination.pageSize
+      }`
+
+      return (
+        <div className="capitalize whitespace-nowrap">
+          <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium">
+            {progress}
+
+            <Separator className="mx-2 h-4" orientation="vertical" />
+            <span>
+              {format(new Date(row.getValue('investmentDate')), 'MMMM, yyyy', {
+                locale: ptBR,
+              })}
+            </span>
+          </div>
+        </div>
+      )
+    },
   },
   {
+    id: 'Valor investido',
     accessorKey: 'investedAmount',
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -51,14 +49,13 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
       />
     ),
     cell: ({ row }) => (
-      <div className="flex space-x-2 whitespace-nowrap">
+      <div className="whitespace-nowrap">
         {formatCurrency(row.getValue('investedAmount'))}
       </div>
     ),
-    enableSorting: false,
-    enableHiding: false,
   },
   {
+    id: 'Valor acumulado',
     accessorKey: 'accumulatedAmount',
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -68,24 +65,19 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
       />
     ),
     cell: ({ row }) => (
-      <div className="flex w-[100px] items-center">
+      <div className="">
         {formatCurrency(row.getValue('accumulatedAmount'))}
       </div>
     ),
-    enableSorting: false,
-    enableHiding: false,
   },
   {
+    id: 'Rendimento',
     accessorKey: 'monthlyReturn',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Rendimento" />
     ),
     cell: ({ row }) => (
-      <div className="flex items-center">
-        {formatCurrency(row.getValue('monthlyReturn'))}
-      </div>
+      <div>{formatCurrency(row.getValue('monthlyReturn'))}</div>
     ),
-    enableSorting: false,
-    enableHiding: false,
   },
 ]
