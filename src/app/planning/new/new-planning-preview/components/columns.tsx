@@ -13,7 +13,7 @@ import { Separator } from '@/components/ui/separator'
 export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
   {
     id: 'Mês',
-    accessorKey: 'investmentDate',
+    accessorKey: 'accumulatedAmount',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Mês" />
     ),
@@ -22,17 +22,17 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
         table.getState().pagination.pageSize
       }`
 
+      const label = format(new Date(row.getValue('Mês')), 'MMMM, yyyy', {
+        locale: ptBR,
+      })
+
       return (
         <div className="capitalize whitespace-nowrap">
           <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium">
             {progress}
 
             <Separator className="mx-2 h-4" orientation="vertical" />
-            <span>
-              {format(new Date(row.getValue('investmentDate')), 'MMMM, yyyy', {
-                locale: ptBR,
-              })}
-            </span>
+            <span>{label}</span>
           </div>
         </div>
       )
@@ -50,7 +50,7 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
     ),
     cell: ({ row }) => (
       <div className="whitespace-nowrap">
-        {formatCurrency(row.getValue('investedAmount'))}
+        {formatCurrency(row.getValue('Valor investido'))}
       </div>
     ),
   },
@@ -65,9 +65,7 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
       />
     ),
     cell: ({ row }) => (
-      <div className="">
-        {formatCurrency(row.getValue('accumulatedAmount'))}
-      </div>
+      <div className="">{formatCurrency(row.getValue('Valor acumulado'))}</div>
     ),
   },
   {
@@ -76,8 +74,6 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Rendimento" />
     ),
-    cell: ({ row }) => (
-      <div>{formatCurrency(row.getValue('monthlyReturn'))}</div>
-    ),
+    cell: ({ row }) => <div>{formatCurrency(row.getValue('Rendimento'))}</div>,
   },
 ]
