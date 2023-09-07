@@ -12,6 +12,7 @@ export const metadata = {
 }
 
 const inter = Inter({
+  display: 'fallback',
   subsets: ['latin'],
 })
 
@@ -22,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="pt-BR" suppressHydrationWarning>
         <head />
 
         <body
@@ -31,7 +32,7 @@ export default function RootLayout({
             inter.className,
           )}
         >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider>
             <Header />
             {children}
           </ThemeProvider>
