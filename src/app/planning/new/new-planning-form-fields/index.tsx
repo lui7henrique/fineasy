@@ -15,8 +15,8 @@ export function NewPlanningFormFields() {
   } = useFormContext<NewPlanningFormType>()
 
   return (
-    <div className="w-full space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-6">
+    <div className="w-full space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-4">
         <NewPlanningFormFieldValue />
         <NewPlanningFormFieldTime />
         <NewPlanningFormFieldDate />

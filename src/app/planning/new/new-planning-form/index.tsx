@@ -15,6 +15,7 @@ import { FormSchema } from '../schema'
 import { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
 import { api } from '@/services/api'
 import { toast } from '@/components/ui/use-toast'
+import { Separator } from '@/components/ui/separator'
 
 export type NewPlanningFormType = z.infer<typeof FormSchema>
 
@@ -65,35 +66,29 @@ export const NewPlanningForm = () => {
     } catch {}
   }
 
-  console.log({ newPlanning })
-
   return (
     <Form {...form}>
-      <div className="max-w-app py-6 mx-auto px-4 space-y-6">
+      <div className="max-w-app py-6 mx-auto px-4 space-y-10">
         <form className="" onSubmit={form.handleSubmit(onSubmit)}>
           <NewPlanningFormFields />
         </form>
 
+        {newPlanning && <Separator />}
+
         {newPlanning && (
-          <div className="rounded-lg border bg-background shadow h-full overflow-y-scroll max-h-[60vh]">
-            <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
-              <div className="flex items-center justify-between space-y-2">
-                <div>
-                  <h2 className="text-2xl font-bold tracking-tight">
-                    Acompanhe seus rendimentos mensais
-                  </h2>
-                  <p className="text-muted-foreground">
-                    A tabela abaixo mostra o rendimento detalhado de cada mês,
-                    permitindo que você planeje com precisão seus objetivos
-                    financeiros e acompanhe seu progresso de forma transparente
-                  </p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  {/* <UserNav /> */}
-                </div>
-              </div>
-              <DataTable data={newPlanning} columns={columns} />
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-bold tracking-tight">
+                Acompanhe seus rendimentos mensais
+              </h2>
+              <p className="text-muted-foreground">
+                A tabela abaixo mostra o rendimento detalhado de cada mês,
+                permitindo que você planeje com precisão seus objetivos
+                financeiros e acompanhe seu progresso de forma transparente
+              </p>
             </div>
+
+            <DataTable data={newPlanning} columns={columns} />
           </div>
         )}
       </div>

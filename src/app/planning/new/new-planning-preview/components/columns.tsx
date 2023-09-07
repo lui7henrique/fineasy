@@ -9,7 +9,6 @@ import { formatCurrency } from '@/utils/format-currency'
 import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { Checkbox } from '@/components/ui/checkbox'
 
 export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
   {
@@ -17,7 +16,7 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
     header: () => <></>,
     cell: ({ row, table }) => {
       return (
-        <div className="w-[64px]">
+        <div className="min-w-[20px]">
           <Badge>
             {row.index + 1}/{table.getState().pagination.pageSize}
           </Badge>
@@ -33,7 +32,7 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
       <DataTableColumnHeader column={column} title="Mês" />
     ),
     cell: ({ row }) => (
-      <div className="capitalize">
+      <div className="capitalize whitespace-nowrap">
         {format(new Date(row.getValue('investmentDate')), 'MMMM, yyyy', {
           locale: ptBR,
         })}
@@ -45,10 +44,14 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
   {
     accessorKey: 'investedAmount',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Valor investido" />
+      <DataTableColumnHeader
+        column={column}
+        title="Valor investido"
+        className="whitespace-nowrap"
+      />
     ),
     cell: ({ row }) => (
-      <div className="flex space-x-2">
+      <div className="flex space-x-2 whitespace-nowrap">
         {formatCurrency(row.getValue('investedAmount'))}
       </div>
     ),
@@ -58,7 +61,11 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
   {
     accessorKey: 'accumulatedAmount',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Valor acumulado" />
+      <DataTableColumnHeader
+        column={column}
+        title="Valor acumulado"
+        className="whitespace-nowrap"
+      />
     ),
     cell: ({ row }) => (
       <div className="flex w-[100px] items-center">
@@ -80,9 +87,5 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-  },
-  {
-    id: 'actions',
-    cell: ({ row }) => <h1 />,
   },
 ]
