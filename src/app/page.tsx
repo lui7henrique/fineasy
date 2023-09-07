@@ -11,7 +11,7 @@ import Link from 'next/link'
 export default function Home() {
   return (
     <div className="max-w-app mx-auto py-12 flex flex-col justify-center p-4">
-      <div className="max-w-[780px]">
+      <div className="max-w-[830px]">
         <Link
           href="/docs/changelog"
           className="inline-flex items-center rounded-lg bg-muted px-3 py-1.5 text-sm font-medium mb-4"
