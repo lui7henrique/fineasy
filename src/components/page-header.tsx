@@ -19,7 +19,7 @@ function PageHeaderHeading({ className, ...props }: ComponentProps<'h1'>) {
   return (
     <h1
       className={cn(
-        'text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:leading-[1.2]',
+        'text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:leading-[1.1]',
         className,
       )}
       {...props}
@@ -31,7 +31,7 @@ function PageHeaderDescription({ className, ...props }: ComponentProps<'p'>) {
   return (
     <Balance
       className={cn(
-        'max-w-[750px] text-lg text-muted-foreground sm:text-xl/8',
+        'max-w-[750px] text-lg text-muted-foreground sm:text-xl',
         className,
       )}
       {...props}
