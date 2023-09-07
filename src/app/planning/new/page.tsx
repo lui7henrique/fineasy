@@ -1,7 +1,10 @@
+import { getCdiRate } from 'selic'
 import { NewPlanningForm } from './new-planning-form'
 
 const NewPlainPage = async () => {
-  return <NewPlanningForm />
+  const cdiRate = await getCdiRate()
+
+  return <NewPlanningForm cdiRate={cdiRate} />
 }
 
 export default NewPlainPage

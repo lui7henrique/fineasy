@@ -10,11 +10,11 @@ import Link from 'next/link'
 
 export default function Home() {
   return (
-    <div className="max-w-app mx-auto py-20 flex flex-col justify-center p-4">
-      <div>
+    <div className="max-w-app mx-auto py-12 flex flex-col justify-center p-4">
+      <div className="max-w-[780px]">
         <Link
           href="/docs/changelog"
-          className="inline-flex items-center rounded-lg bg-muted px-3 py-1.5 text-sm font-medium mb-6"
+          className="inline-flex items-center rounded-lg bg-muted px-3 py-1.5 text-sm font-medium mb-4"
         >
           📊 <Separator className="mx-2 h-4" orientation="vertical" />{' '}
           <span className="sm:hidden">Style, a new CLI and more.</span>
@@ -24,11 +24,11 @@ export default function Home() {
           <ArrowRightIcon className="ml-1 h-4 w-4" />
         </Link>
 
-        <PageHeaderHeading className="mb-4 max-w-[750px]">
-          Gerencie suas finanças <br /> com facilidade.
+        <PageHeaderHeading className="mb-4">
+          Gerencie suas finanças com facilidade.
         </PageHeaderHeading>
 
-        <PageHeaderDescription className="mb-8">
+        <PageHeaderDescription className="mb-4">
           Descubra o Fineasy, a aplicação de gerenciamento e planejamento
           financeiro que vai revolucionar a forma como você lida com seu
           dinheiro. Simples de usar. Flexível. Seguro.

@@ -12,20 +12,27 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Form } from '@/components/ui/form'
 
 import { FormSchema } from '../schema'
-import { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
-import { api } from '@/services/api'
+import {
+  MonthlyInvestmentInfo,
+  calculateMonthlyReturns,
+} from '@/utils/calculate-monthly-returns'
 import { toast } from '@/components/ui/use-toast'
 import { Separator } from '@/components/ui/separator'
 
 export type NewPlanningFormType = z.infer<typeof FormSchema>
 
-export const NewPlanningForm = () => {
+interface NewPlanningFormProps {
+  cdiRate: number
+}
+
+export const NewPlanningForm = ({ cdiRate }: NewPlanningFormProps) => {
   const [newPlanning, setNewPlanning] = useState<
     MonthlyInvestmentInfo[] | null
   >(null)
 
   const form = useForm<NewPlanningFormType>({
     resolver: zodResolver(FormSchema),
+    mode: 'onChange',
   })
 
   async function onSubmit(form: NewPlanningFormType) {
@@ -38,19 +45,16 @@ export const NewPlanningForm = () => {
       return form.investmentTime * multiplier[form.timeMetric]
     }
 
-    const formattedData = {
-      investment: form.investment,
-      investmentTimeInMonths: getFormattedInvestment(),
-      investmentDate: new Date().toISOString(),
-    }
-
     try {
-      const response = await api.post<MonthlyInvestmentInfo[]>(
-        '/planning',
-        formattedData,
+      const returns = calculateMonthlyReturns(
+        form.investment,
+        getFormattedInvestment(),
+        100,
+        new Date(),
+        cdiRate,
       )
 
-      setNewPlanning(response.data)
+      setNewPlanning(returns)
 
       process.env.NODE_ENV === 'development' &&
         toast({
@@ -58,12 +62,14 @@ export const NewPlanningForm = () => {
           description: (
             <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 max-h-80 overflow-y-scroll">
               <code className="text-white">
-                {JSON.stringify(response.data, null, 2)}
+                {JSON.stringify(returns, null, 2)}
               </code>
             </pre>
           ),
         })
-    } catch {}
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

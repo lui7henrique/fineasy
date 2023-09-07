@@ -1,6 +1,4 @@
-import { randomUUID } from 'crypto'
 import { addMonths } from 'date-fns'
-import { getCdiRate } from 'selic'
 
 export type MonthlyInvestmentInfo = {
   id: string
@@ -10,12 +8,13 @@ export type MonthlyInvestmentInfo = {
   investmentDate: Date
 }
 
-export async function calculateMonthlyReturns(
+export function calculateMonthlyReturns(
   investment: number,
   investmentTimeInMonths: number,
   investmentRate: number,
   investmentDate: Date,
-): Promise<MonthlyInvestmentInfo[]> {
+  cdiRate: number,
+): MonthlyInvestmentInfo[] {
   if (investment <= 0 || investmentTimeInMonths <= 0 || investmentRate <= 0) {
     throw new Error(
       'Investment, investmentTimeInMonths, and cdiRate must be positive values',
@@ -24,8 +23,6 @@ export async function calculateMonthlyReturns(
 
   const monthlyReturns: MonthlyInvestmentInfo[] = []
   let accumulatedAmount = 0
-
-  const cdiRate = await getCdiRate()
 
   for (let month = 1; month <= investmentTimeInMonths; month++) {
     const investmentRateReturn = (investmentRate / 100) * cdiRate
@@ -38,7 +35,7 @@ export async function calculateMonthlyReturns(
     const investedAmount = investment * month
 
     monthlyReturns.push({
-      id: randomUUID(),
+      id: month.toString(),
       monthlyReturn,
       investedAmount,
       accumulatedAmount,
