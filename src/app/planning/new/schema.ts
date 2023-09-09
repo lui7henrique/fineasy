@@ -28,7 +28,7 @@ export const FormSchema = z.object({
 
   timeMetric: z.enum(['months', 'years']),
 
-  investmentDate: z.string().optional(),
+  investmentDate: z.date({ required_error: 'Data é um campo obrigatório.' }),
 
   inflation: z.boolean().default(false).optional(),
 })

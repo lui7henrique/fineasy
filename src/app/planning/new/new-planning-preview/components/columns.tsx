@@ -29,7 +29,7 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
 
       return (
         <div className="capitalize whitespace-nowrap">
-          <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium">
+          <div className="inline-flex items-center rounded-lg bg-foreground/5 px-3 py-1 text-sm font-medium">
             {progress}
 
             <Separator className="mx-2 h-4" orientation="vertical" />
@@ -43,7 +43,7 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
   },
   {
     id: 'Valor investido',
-    accessorKey: 'investedAmount',
+    accessorKey: 'monthlyInvestment',
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -51,9 +51,27 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
         className="whitespace-nowrap"
       />
     ),
+    cell: ({ row }) => {
+      return (
+        <div className="whitespace-nowrap">
+          {formatCurrency(row.getValue('Valor investido'))}
+        </div>
+      )
+    },
+  },
+  {
+    id: 'Valor total investido',
+    accessorKey: 'investedAmount',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Valor total investido"
+        className="whitespace-nowrap"
+      />
+    ),
     cell: ({ row }) => (
       <div className="whitespace-nowrap">
-        {formatCurrency(row.getValue('Valor investido'))}
+        {formatCurrency(row.getValue('Valor total investido'))}
       </div>
     ),
   },

@@ -16,7 +16,7 @@ export function NewPlanningFormFields() {
 
   return (
     <div className="w-full space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] gap-4">
         <NewPlanningFormFieldValue />
         <NewPlanningFormFieldTime />
         <NewPlanningFormFieldDate />

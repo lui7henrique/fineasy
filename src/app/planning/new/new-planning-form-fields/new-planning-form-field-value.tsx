@@ -8,6 +8,7 @@ import { useFormContext } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -53,6 +54,10 @@ export const NewPlanningFormFieldValue = () => {
               </Button>
             </div>
           </FormControl>
+
+          <FormDescription>
+            Este é o valor que você pretende investir todo mês.
+          </FormDescription>
 
           <FormMessage />
         </FormItem>

@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form'
 
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -53,6 +54,10 @@ export const NewPlanningFormFieldTime = () => {
               />
             </div>
           </FormControl>
+
+          <FormDescription>
+            Especifique por quantos meses/anos você deseja investir.
+          </FormDescription>
 
           <FormMessage />
         </FormItem>

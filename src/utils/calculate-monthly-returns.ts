@@ -2,20 +2,37 @@ import { addMonths } from 'date-fns'
 
 export type MonthlyInvestmentInfo = {
   id: string
-  monthlyReturn: number
   investedAmount: number
   accumulatedAmount: number
   investmentDate: Date
+  monthlyReturn: number
+  monthlyInvestment: number
+}
+
+type CalculateMonthlyReturnsOptions = {
+  investmentValue: number
+  investmentTimeInMonths: number
+  investmentRate: number
+  investmentDate: Date
+  cdiRate: number
 }
 
 export function calculateMonthlyReturns(
-  investment: number,
-  investmentTimeInMonths: number,
-  investmentRate: number,
-  investmentDate: Date,
-  cdiRate: number,
+  options: CalculateMonthlyReturnsOptions,
 ): MonthlyInvestmentInfo[] {
-  if (investment <= 0 || investmentTimeInMonths <= 0 || investmentRate <= 0) {
+  const {
+    investmentValue,
+    investmentTimeInMonths,
+    investmentDate,
+    investmentRate,
+    cdiRate,
+  } = options
+
+  if (
+    investmentValue <= 0 ||
+    investmentTimeInMonths <= 0 ||
+    investmentRate <= 0
+  ) {
     throw new Error(
       'Investment, investmentTimeInMonths, and cdiRate must be positive values',
     )
@@ -31,11 +48,12 @@ export function calculateMonthlyReturns(
       (((investmentRateReturn / 100) * accumulatedAmount) / 12).toFixed(),
     )
 
-    accumulatedAmount += investment + monthlyReturn
-    const investedAmount = investment * month
+    accumulatedAmount += investmentValue + monthlyReturn
+    const investedAmount = investmentValue * month
 
     monthlyReturns.push({
       id: month.toString(),
+      monthlyInvestment: investmentValue,
       monthlyReturn,
       investedAmount,
       accumulatedAmount,

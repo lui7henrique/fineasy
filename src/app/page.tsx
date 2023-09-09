@@ -14,10 +14,12 @@ export default function Home() {
       <div className="max-w-[830px]">
         <Link
           href="/docs/changelog"
-          className="inline-flex items-center rounded-lg bg-muted px-3 py-1.5 text-sm font-medium mb-4"
+          className="inline-flex items-center rounded-lg bg-foreground/5 px-3 py-1.5 text-sm font-medium mb-4"
         >
           📊 <Separator className="mx-2 h-4" orientation="vertical" />{' '}
-          <span className="sm:hidden">Style, a new CLI and more.</span>
+          <span className="sm:hidden">
+            Gerenciamento e planejamento financeiro!
+          </span>
           <span className="hidden sm:inline">
             Gerenciamento e planejamento financeiro!
           </span>

@@ -36,7 +36,7 @@ export const NewPlanningForm = ({ cdiRate }: NewPlanningFormProps) => {
   })
 
   async function onSubmit(form: NewPlanningFormType) {
-    const getFormattedInvestment = () => {
+    const getFormattedInvestmentTime = () => {
       const multiplier: Record<NewPlanningFormType['timeMetric'], number> = {
         months: 1,
         years: 12,
@@ -46,13 +46,15 @@ export const NewPlanningForm = ({ cdiRate }: NewPlanningFormProps) => {
     }
 
     try {
-      const returns = calculateMonthlyReturns(
-        form.investment,
-        getFormattedInvestment(),
-        100,
-        new Date(),
+      const returns = calculateMonthlyReturns({
         cdiRate,
-      )
+        investmentDate: new Date(),
+        investmentRate: 100,
+        investmentTimeInMonths: getFormattedInvestmentTime(),
+        investmentValue: form.investment,
+      })
+
+      console.log({ returns })
 
       setNewPlanning(returns)
 
