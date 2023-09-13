@@ -1,7 +1,8 @@
 import { ModeToggle } from '@/components/mode-toggle'
-import { DollarSign } from 'lucide-react'
+import { BarChart, DollarSign, LineChart, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import { getCdiRate } from 'selic'
+import { Separator } from './ui/separator'
 
 export const Header = async () => {
   const cdiRate = await getCdiRate()
@@ -19,9 +20,13 @@ export const Header = async () => {
 
           {/* <h1 className="font-bold text-md text-foreground">Fineasy</h1> */}
         </div>
+
         <div className="flex items-center gap-4">
-          <div>
-            <span className="font-bold">CDI:</span> {cdiRate}%
+          <div className="inline-flex items-center rounded-lg bg-foreground/5 px-3 py-1.5 text-sm font-medium">
+            <LineChart size={14} className="mr-1" />
+            CDI
+            <Separator className="mx-2 h-4" orientation="vertical" />
+            <span className="font-bold"></span> {cdiRate}%
           </div>
 
           <ModeToggle />

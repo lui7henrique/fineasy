@@ -46,7 +46,7 @@ export function calculateMonthlyReturns(
     const investmentRateReturn = (investmentRate / 100) * cdiRate
 
     const monthlyReturn = Number(
-      (((investmentRateReturn / 100) * accumulatedAmount) / 12).toFixed(),
+      ((investmentRateReturn / 100) * accumulatedAmount) / 12,
     )
 
     accumulatedAmount += investmentValue + monthlyReturn
