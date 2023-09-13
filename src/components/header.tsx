@@ -1,8 +1,11 @@
 import { ModeToggle } from '@/components/mode-toggle'
 import { DollarSign } from 'lucide-react'
 import Link from 'next/link'
+import { getCdiRate } from 'selic'
 
-export const Header = () => {
+export const Header = async () => {
+  const cdiRate = await getCdiRate()
+
   return (
     <header className="border-b w-full">
       <div className="max-w-app flex justify-between items-center w-full mx-auto p-4">
@@ -16,8 +19,13 @@ export const Header = () => {
 
           {/* <h1 className="font-bold text-md text-foreground">Fineasy</h1> */}
         </div>
+        <div className="flex items-center gap-4">
+          <div>
+            <span className="font-bold">CDI:</span> {cdiRate}%
+          </div>
 
-        <ModeToggle />
+          <ModeToggle />
+        </div>
       </div>
     </header>
   )

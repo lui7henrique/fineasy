@@ -22,24 +22,22 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <>
-      <html lang="pt-BR" suppressHydrationWarning>
-        <head />
+    <html lang="pt-BR" suppressHydrationWarning>
+      <head />
 
-        <body
-          className={cn(
-            'min-h-screen bg-background font-sans antialiased',
-            inter.className,
-          )}
-        >
-          <ThemeProvider>
-            <Header />
-            {children}
-          </ThemeProvider>
+      <body
+        className={cn(
+          'min-h-screen bg-background font-sans antialiased',
+          inter.className,
+        )}
+      >
+        <ThemeProvider>
+          <Header />
+          {children}
+        </ThemeProvider>
 
-          <Toaster />
-        </body>
-      </html>
-    </>
+        <Toaster />
+      </body>
+    </html>
   )
 }
