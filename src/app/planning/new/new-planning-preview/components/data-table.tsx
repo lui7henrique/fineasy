@@ -70,7 +70,7 @@ export function DataTable<TData, TValue>({
       <div className="space-y-4">
         <div className="rounded-md border">
           <Table>
-            <TableHeader className="sticky top-0 outline-2 outline-muted bg-background outline">
+            <TableHeader className="sticky top-0 outline-muted bg-background outline outline-1">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
