@@ -1,5 +1,5 @@
 import { ModeToggle } from '@/components/mode-toggle'
-import { BarChart, DollarSign, LineChart, TrendingUp } from 'lucide-react'
+import { DollarSign, LineChart } from 'lucide-react'
 import Link from 'next/link'
 import { getCdiRate } from 'selic'
 import { Separator } from './ui/separator'
