@@ -15,12 +15,12 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { NewPlanningFormType } from '../new-planning-form'
+import { NewPlanningFormTypeInput } from '../new-planning-form'
 
 export const NewPlanningFormFieldValue = () => {
   const [isAccumulatedValue, setIsAccumulatedValue] = useState(false)
 
-  const form = useFormContext<NewPlanningFormType>()
+  const form = useFormContext<NewPlanningFormTypeInput>()
 
   return (
     <FormField

@@ -10,10 +10,10 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form'
-import { NewPlanningFormType } from '../new-planning-form'
+import { NewPlanningFormTypeInput } from '../new-planning-form'
 
 export const NewPlanningFormFieldInflation = () => {
-  const form = useFormContext<NewPlanningFormType>()
+  const form = useFormContext<NewPlanningFormTypeInput>()
 
   return (
     <FormField

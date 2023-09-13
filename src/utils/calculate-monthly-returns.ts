@@ -7,6 +7,7 @@ export type MonthlyInvestmentInfo = {
   investmentDate: Date
   monthlyReturn: number
   monthlyInvestment: number
+  accumulatedReturns: number
 }
 
 type CalculateMonthlyReturnsOptions = {
@@ -57,6 +58,7 @@ export function calculateMonthlyReturns(
       monthlyReturn,
       investedAmount,
       accumulatedAmount,
+      accumulatedReturns: accumulatedAmount - investedAmount,
       investmentDate: addMonths(new Date(investmentDate), month),
     })
   }

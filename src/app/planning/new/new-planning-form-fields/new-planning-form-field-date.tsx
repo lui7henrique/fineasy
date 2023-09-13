@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 
-import { NewPlanningFormType } from '../new-planning-form'
+import { NewPlanningFormTypeInput } from '../new-planning-form'
 import {
   Popover,
   PopoverContent,
@@ -25,13 +25,16 @@ import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
+const today = new Date()
+
 export const NewPlanningFormFieldDate = () => {
-  const form = useFormContext<NewPlanningFormType>()
+  const form = useFormContext<NewPlanningFormTypeInput>()
 
   return (
     <FormField
       control={form.control}
       name="investmentDate"
+      defaultValue={today}
       render={({ field }) => (
         <FormItem>
           <FormLabel>Data</FormLabel>

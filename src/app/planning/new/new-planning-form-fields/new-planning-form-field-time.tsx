@@ -18,22 +18,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { NewPlanningFormType } from '../new-planning-form'
+import { NewPlanningFormTypeInput } from '../new-planning-form'
 
 export const NewPlanningFormFieldTime = () => {
-  const form = useFormContext<NewPlanningFormType>()
+  const form = useFormContext<NewPlanningFormTypeInput>()
 
   return (
     <FormField
       control={form.control}
       name="investmentTime"
+      defaultValue="10"
       render={({ field }) => (
         <FormItem>
           <FormLabel>Tempo de investimento</FormLabel>
 
           <FormControl>
             <div className="grid grid-cols-2 w-full gap-4">
-              <Input placeholder="20" type="number" {...field} />
+              <Input placeholder="10" type="number" {...field} />
 
               <FormField
                 control={form.control}

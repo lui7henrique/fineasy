@@ -97,4 +97,14 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
     ),
     cell: ({ row }) => <div>{formatCurrency(row.getValue('Rendimento'))}</div>,
   },
+  {
+    id: 'Rendimento acumulado',
+    accessorKey: 'accumulatedReturns',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Rendimento acumulado" />
+    ),
+    cell: ({ row }) => (
+      <div>{formatCurrency(row.getValue('Rendimento acumulado'))}</div>
+    ),
+  },
 ]

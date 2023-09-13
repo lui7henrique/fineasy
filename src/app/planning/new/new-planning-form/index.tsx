@@ -19,7 +19,8 @@ import {
 import { toast } from '@/components/ui/use-toast'
 import { Separator } from '@/components/ui/separator'
 
-export type NewPlanningFormType = z.infer<typeof FormSchema>
+export type NewPlanningFormTypeInput = z.input<typeof FormSchema>
+export type NewPlanningFormTypeOutput = z.output<typeof FormSchema>
 
 interface NewPlanningFormProps {
   cdiRate: number
@@ -30,14 +31,17 @@ export const NewPlanningForm = ({ cdiRate }: NewPlanningFormProps) => {
     MonthlyInvestmentInfo[] | null
   >(null)
 
-  const form = useForm<NewPlanningFormType>({
+  const form = useForm<NewPlanningFormTypeOutput>({
     resolver: zodResolver(FormSchema),
     mode: 'onChange',
   })
 
-  async function onSubmit(form: NewPlanningFormType) {
+  async function onSubmit(form: NewPlanningFormTypeOutput) {
     const getFormattedInvestmentTime = () => {
-      const multiplier: Record<NewPlanningFormType['timeMetric'], number> = {
+      const multiplier: Record<
+        NewPlanningFormTypeOutput['timeMetric'],
+        number
+      > = {
         months: 1,
         years: 12,
       }
