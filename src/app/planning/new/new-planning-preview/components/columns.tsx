@@ -19,7 +19,7 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
     cell: ({ row, table }) => {
       const month = row.index + 1
 
-      const progress = `${month}/${table.getState().pagination.pageSize}`
+      const progress = `${month}º mês`
 
       const value = row.getValue('investmentDate')
 
@@ -100,12 +100,14 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
     ),
   },
   {
-    id: 'Rendimento',
+    id: 'Rendimento mensal',
     accessorKey: 'monthlyReturn',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Rendimento" />
+      <DataTableColumnHeader column={column} title="Rendimento mensal" />
     ),
-    cell: ({ row }) => <div>{formatCurrency(row.getValue('Rendimento'))}</div>,
+    cell: ({ row }) => (
+      <div>{formatCurrency(row.getValue('Rendimento mensal'))}</div>
+    ),
   },
   {
     id: 'Rendimento acumulado',
