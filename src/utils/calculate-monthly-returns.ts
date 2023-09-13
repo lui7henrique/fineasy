@@ -49,6 +49,8 @@ export function calculateMonthlyReturns(
       (((investmentRateReturn / 100) * accumulatedAmount) / 12).toFixed(),
     )
 
+    console.log({ investmentRateReturn })
+
     accumulatedAmount += investmentValue + monthlyReturn
     const investedAmount = investmentValue * month
 
