@@ -16,7 +16,7 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Mês" />
     ),
-    cell: ({ row, table }) => {
+    cell: ({ row }) => {
       const month = row.index + 1
 
       const progress = `${month}º mês`
