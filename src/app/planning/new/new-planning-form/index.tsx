@@ -58,8 +58,6 @@ export const NewPlanningForm = ({ cdiRate }: NewPlanningFormProps) => {
         investmentValue: form.investment,
       })
 
-      console.log({ returns })
-
       setNewPlanning(returns)
 
       process.env.NODE_ENV === 'development' &&
