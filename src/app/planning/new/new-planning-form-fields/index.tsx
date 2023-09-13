@@ -7,12 +7,12 @@ import { NewPlanningFormFieldTime } from './new-planning-form-field-time'
 import { NewPlanningFormFieldInflation } from './new-planning-form-field-inflation'
 import { NewPlanningFormFieldDate } from './new-planning-form-field-date'
 import { useFormContext } from 'react-hook-form'
-import { NewPlanningFormType } from '../new-planning-form'
+import { NewPlanningFormTypeInput } from '../new-planning-form'
 
 export function NewPlanningFormFields() {
   const {
     formState: { isSubmitting },
-  } = useFormContext<NewPlanningFormType>()
+  } = useFormContext<NewPlanningFormTypeInput>()
 
   return (
     <div className="w-full space-y-4">
