@@ -24,13 +24,15 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTableViewOptions } from './data-table-view-options'
+import { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
+import { cn } from '@/lib/utils'
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends MonthlyInvestmentInfo, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends MonthlyInvestmentInfo, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {

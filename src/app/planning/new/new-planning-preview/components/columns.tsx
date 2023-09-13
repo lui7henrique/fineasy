@@ -17,9 +17,9 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
       <DataTableColumnHeader column={column} title="Mês" />
     ),
     cell: ({ row, table }) => {
-      const progress = `${row.index + 1}/${
-        table.getState().pagination.pageSize
-      }`
+      const month = row.index + 1
+
+      const progress = `${month}/${table.getState().pagination.pageSize}`
 
       const value = row.getValue('investmentDate')
 
@@ -27,13 +27,23 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
         locale: ptBR,
       })
 
+      const isYear = month % 12 === 0
+      const year = month / 12
+
       return (
-        <div className="capitalize whitespace-nowrap">
+        <div className="capitalize whitespace-nowrap flex items-center gap-1.5">
           <div className="inline-flex items-center rounded-lg bg-foreground/5 px-3 py-1 text-sm font-medium">
             {progress}
 
             <Separator className="mx-2 h-4" orientation="vertical" />
             <span>{label}</span>
+
+            {isYear && (
+              <>
+                <Separator className="mx-2 h-4" orientation="vertical" />
+                <span>{year}º Ano</span>
+              </>
+            )}
           </div>
         </div>
       )
