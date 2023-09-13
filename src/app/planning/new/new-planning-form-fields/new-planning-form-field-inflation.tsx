@@ -20,7 +20,7 @@ export const NewPlanningFormFieldInflation = () => {
       control={form.control}
       name="inflation"
       render={({ field }) => (
-        <FormItem className="rounded-md border p-4">
+        <FormItem className="">
           <div className="flex flex-row items-start space-x-3 space-y-0">
             <FormControl>
               <Checkbox

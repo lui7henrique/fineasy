@@ -1,12 +1,14 @@
+import { ArrowRightIcon } from 'lucide-react'
+import Link from 'next/link'
+
 import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from '@/components/page-header'
 import { buttonVariants } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+
 import { cn } from '@/lib/utils'
-import { ArrowRightIcon } from 'lucide-react'
-import Link from 'next/link'
 
 export default function Home() {
   return (

@@ -103,7 +103,11 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
     id: 'Rendimento mensal',
     accessorKey: 'monthlyReturn',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Rendimento mensal" />
+      <DataTableColumnHeader
+        column={column}
+        title="Rendimento mensal"
+        className="whitespace-nowrap"
+      />
     ),
     cell: ({ row }) => (
       <div>{formatCurrency(row.getValue('Rendimento mensal'))}</div>
@@ -113,7 +117,11 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
     id: 'Rendimento acumulado',
     accessorKey: 'accumulatedReturns',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Rendimento acumulado" />
+      <DataTableColumnHeader
+        column={column}
+        title="Rendimento acumulado"
+        className="whitespace-nowrap"
+      />
     ),
     cell: ({ row }) => (
       <div>{formatCurrency(row.getValue('Rendimento acumulado'))}</div>

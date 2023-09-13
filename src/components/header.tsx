@@ -1,11 +1,13 @@
+'use client'
+
 import { ModeToggle } from '@/components/mode-toggle'
 import { DollarSign, LineChart } from 'lucide-react'
 import Link from 'next/link'
-import { getCdiRate } from 'selic'
 import { Separator } from './ui/separator'
+import { useCdi } from '@/context/cdi/cdi'
 
-export const Header = async () => {
-  const cdiRate = await getCdiRate()
+export const Header = () => {
+  const { cdiRate } = useCdi()
 
   return (
     <header className="border-b w-full">

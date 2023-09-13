@@ -22,11 +22,7 @@ import { Separator } from '@/components/ui/separator'
 export type NewPlanningFormTypeInput = z.input<typeof FormSchema>
 export type NewPlanningFormTypeOutput = z.output<typeof FormSchema>
 
-interface NewPlanningFormProps {
-  cdiRate: number
-}
-
-export const NewPlanningForm = ({ cdiRate }: NewPlanningFormProps) => {
+export const NewPlanningForm = () => {
   const [newPlanning, setNewPlanning] = useState<
     MonthlyInvestmentInfo[] | null
   >(null)
@@ -51,9 +47,9 @@ export const NewPlanningForm = ({ cdiRate }: NewPlanningFormProps) => {
 
     try {
       const returns = calculateMonthlyReturns({
-        cdiRate,
+        cdiRate: form.cdiRate,
         investmentDate: new Date(),
-        investmentRate: 100,
+        investmentRate: form.investmentRate,
         investmentTimeInMonths: getFormattedInvestmentTime(),
         investmentValue: form.investment,
       })
@@ -78,7 +74,7 @@ export const NewPlanningForm = ({ cdiRate }: NewPlanningFormProps) => {
 
   return (
     <Form {...form}>
-      <div className="max-w-app py-6 mx-auto px-4 space-y-10">
+      <div className="max-w-app py-6 mx-auto px-4 space-y-8">
         <form className="" onSubmit={form.handleSubmit(onSubmit)}>
           <NewPlanningFormFields />
         </form>
@@ -86,11 +82,12 @@ export const NewPlanningForm = ({ cdiRate }: NewPlanningFormProps) => {
         {newPlanning && <Separator />}
 
         {newPlanning && (
-          <div className="space-y-4">
+          <>
             <div className="space-y-2">
               <h2 className="text-2xl font-bold tracking-tight">
                 Acompanhe seus rendimentos mensais
               </h2>
+
               <p className="text-muted-foreground">
                 A tabela abaixo mostra o rendimento detalhado de cada mês,
                 permitindo que você planeje com precisão seus objetivos
@@ -99,7 +96,7 @@ export const NewPlanningForm = ({ cdiRate }: NewPlanningFormProps) => {
             </div>
 
             <DataTable data={newPlanning} columns={columns} />
-          </div>
+          </>
         )}
       </div>
     </Form>

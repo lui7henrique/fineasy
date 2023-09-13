@@ -1,4 +1,5 @@
 import { addMonths } from 'date-fns'
+import { formatValue } from './format-value'
 
 export type MonthlyInvestmentInfo = {
   id: string
@@ -43,10 +44,10 @@ export function calculateMonthlyReturns(
   let accumulatedAmount = 0
 
   for (let month = 1; month <= investmentTimeInMonths; month++) {
-    const investmentRateReturn = (investmentRate / 100) * cdiRate
+    const investmentRateReturn = formatValue((investmentRate / 100) * cdiRate)
 
-    const monthlyReturn = Number(
-      ((investmentRateReturn / 100) * accumulatedAmount) / 12,
+    const monthlyReturn = formatValue(
+      Number(((investmentRateReturn / 100) * accumulatedAmount) / 12),
     )
 
     accumulatedAmount += investmentValue + monthlyReturn

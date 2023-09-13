@@ -3,13 +3,10 @@ export function formatCurrency(value: number) {
     throw new Error('The provided value is not a valid number.')
   }
 
-  const formattedCurrency = (Math.floor(value * 100) / 100).toLocaleString(
-    'pt-BR',
-    {
-      style: 'currency',
-      currency: 'BRL',
-    },
-  )
+  const formattedCurrency = value.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  })
 
   return formattedCurrency
 }

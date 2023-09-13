@@ -75,7 +75,7 @@ export const NewPlanningFormFieldDate = () => {
           </Popover>
 
           <FormDescription>
-            Esta é a data em que você pretende fazer os investimentos mensais.
+            Este é o dia que você irá investir mensalmente.
           </FormDescription>
           <FormMessage />
         </FormItem>
