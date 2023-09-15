@@ -18,6 +18,7 @@ import {
 } from '@/utils/calculate-monthly-returns'
 import { toast } from '@/components/ui/use-toast'
 import { Separator } from '@/components/ui/separator'
+import { useCdi } from '@/context/cdi/cdi'
 
 export type NewPlanningFormTypeInput = z.input<typeof FormSchema>
 export type NewPlanningFormTypeOutput = z.output<typeof FormSchema>
@@ -27,9 +28,20 @@ export const NewPlanningForm = () => {
     MonthlyInvestmentInfo[] | null
   >(null)
 
-  const form = useForm<NewPlanningFormTypeOutput>({
+  const { cdiRate } = useCdi()
+
+  const form = useForm<
+    NewPlanningFormTypeInput,
+    typeof Form,
+    NewPlanningFormTypeOutput
+  >({
     resolver: zodResolver(FormSchema),
     mode: 'onChange',
+    defaultValues: {
+      investmentTime: '10',
+      investmentRate: '100',
+      cdiRate: String(cdiRate),
+    },
   })
 
   async function onSubmit(form: NewPlanningFormTypeOutput) {
