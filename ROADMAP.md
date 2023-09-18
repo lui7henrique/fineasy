@@ -1,9 +1,9 @@
 ### Versão Atual: v1.0.0
 
 **Fase 1: Desenvolvimento Básico**
-- [ ] Estrutura de base do Fineasy
+- [x] Estrutura de base do Fineasy
 - [ ] Autenticação de usuário
-- [ ] Interface de usuário simples
+- [x] Interface de usuário simples
 - [ ] Adicionar despesas manualmente
 - [ ] Painel inicial com resumo financeiro
 
