@@ -12,13 +12,11 @@ O Fineasy é uma aplicação dedicada a ajudar as pessoas a gerenciar suas finan
 | - [ ] Interface de usuário simples      | - [ ] Cálculos de aposentadoria             | - [ ] Sincronizar dados entre diferentes plataformas |
 | - [ ] Adicionar despesas manualmente    | - [ ] Melhorar a visualização de metas financeiras |                                        |
 | - [ ] Painel inicial com resumo financeiro |                                      |                                        |
-
 | **Fase 2: Gerenciamento de Despesas**    | **Fase 5: Colaboração e Compartilhamento** | **Fase 8: Personalização Avançada**      |
 | - [ ] Categorização de despesas         | - [ ] Compartilhar contas e orçamentos     | - [ ] Personalizar a interface por completo |
 | - [ ] Importação de despesas de extratos bancários | - [ ] Divisão de despesas             | - [ ] Suporte a temas e modos escuros   |
 | - [ ] Pesquisa e filtragem de despesas  | - [ ] Sistema de comentários para colaboração | - [ ] Integrações com outras ferramentas financeiras |
 | - [ ] Gráficos e relatórios de despesas |                                      |                                        |
-
 | **Fase 3: Orçamentos Personalizados**    | **Fase 6: Segurança e Privacidade Aprimoradas** | **Fase 9: Feedback dos Usuários**        |
 | - [ ] Criar orçamentos personalizados   | - [ ] Reforçar segurança dos dados do usuário | - [ ] Coletar feedback dos usuários e realizar melhorias |
 | - [ ] Alertas de orçamento excedido     | - [ ] Autenticação de dois fatores        |   contínuas                             |
