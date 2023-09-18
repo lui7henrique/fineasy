@@ -1,5 +1,3 @@
-Claro, vou criar um roadmap em formato de tabela para a aplicação Fineasy:
-
 # Fineasy Roadmap
 
 O Fineasy é uma aplicação dedicada a ajudar as pessoas a gerenciar suas finanças com facilidade. Nosso objetivo é fornecer uma ferramenta intuitiva e segura para que você tenha controle total sobre seu dinheiro. Abaixo está o nosso roadmap de desenvolvimento:
