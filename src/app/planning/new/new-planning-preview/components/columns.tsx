@@ -9,6 +9,13 @@ import { formatCurrency } from '@/utils/format-currency'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Separator } from '@/components/ui/separator'
+import { TrendingDown, TrendingUp } from 'lucide-react'
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from '@/components/ui/tooltip'
 
 export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
   {
@@ -109,9 +116,39 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
         className="whitespace-nowrap"
       />
     ),
-    cell: ({ row }) => (
-      <div>{formatCurrency(row.getValue('Rendimento mensal'))}</div>
-    ),
+    cell: ({ row }) => {
+      const monthlyReturn = Number(row.getValue('Rendimento mensal'))
+      const investedAmount = Number(row.getValue('Valor investido'))
+
+      const isBreakEven = monthlyReturn > investedAmount
+
+      const percentageReturn = (
+        ((monthlyReturn - investedAmount) / investedAmount) *
+        100
+      ).toFixed(2)
+
+      return (
+        <div className="flex gap-2 items-center">
+          {formatCurrency(row.getValue('Rendimento mensal'))}
+
+          <TooltipProvider>
+            {isBreakEven && (
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="bg-green-600/70 px-1 rounded-sm">
+                    <TrendingUp className="stroke-white w-4 h-4" />
+                  </div>
+                </TooltipTrigger>
+
+                <TooltipContent>
+                  +{percentageReturn}% do investimento
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </TooltipProvider>
+        </div>
+      )
+    },
   },
   {
     id: 'Rendimento acumulado',
