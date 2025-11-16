@@ -13,10 +13,7 @@ const PageHeader = ({ className, ...props }: ComponentProps<'section'>) => (
   />
 )
 
-const PageHeaderHeading = ({
-  className,
-  ...props
-}: ComponentProps<'h1'>) => (
+const PageHeaderHeading = ({ className, ...props }: ComponentProps<'h1'>) => (
   <h1
     className={cn(
       'text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:leading-[1.1]',
