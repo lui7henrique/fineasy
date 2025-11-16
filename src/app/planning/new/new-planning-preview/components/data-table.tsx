@@ -28,6 +28,8 @@ import {
 import { DataTableViewOptions } from './data-table-view-options'
 import { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
+import { InvestmentLineChart } from './investment-line-chart'
 
 interface DataTableProps {
   columns: ColumnDef<MonthlyInvestmentInfo, unknown>[]
@@ -35,6 +37,7 @@ interface DataTableProps {
 }
 
 type ViewMode = 'total' | 'parcial'
+type TotalDisplayMode = 'table' | 'chart'
 
 type GroupedInvestments = {
   year: number
@@ -73,6 +76,8 @@ const groupInvestmentsByYear = (
 
 export function DataTable({ columns, data }: DataTableProps) {
   const [viewMode, setViewMode] = React.useState<ViewMode>('total')
+  const [totalDisplayMode, setTotalDisplayMode] =
+    React.useState<TotalDisplayMode>('table')
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
 
@@ -82,6 +87,12 @@ export function DataTable({ columns, data }: DataTableProps) {
     () => groupInvestmentsByYear(data),
     [data],
   )
+
+  React.useEffect(() => {
+    if (viewMode !== 'total' && totalDisplayMode !== 'table') {
+      setTotalDisplayMode('table')
+    }
+  }, [viewMode, totalDisplayMode])
 
   const table = useReactTable({
     data,
@@ -114,16 +125,44 @@ export function DataTable({ columns, data }: DataTableProps) {
       className="mt-4 space-y-4"
     >
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <TabsList>
-          <TabsTrigger value="total">Total</TabsTrigger>
-          <TabsTrigger value="parcial">Parcial</TabsTrigger>
-        </TabsList>
+        <div className="flex flex-wrap items-center gap-3">
+          <TabsList>
+            <TabsTrigger value="total">Total</TabsTrigger>
+            <TabsTrigger value="parcial">Parcial</TabsTrigger>
+          </TabsList>
+
+          {viewMode === 'total' && (
+            <div className="flex flex-wrap items-center gap-2">
+              <Button
+                type="button"
+                size="sm"
+                variant={totalDisplayMode === 'table' ? 'default' : 'outline'}
+                onClick={() => setTotalDisplayMode('table')}
+              >
+                Tabela
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant={totalDisplayMode === 'chart' ? 'default' : 'outline'}
+                onClick={() => setTotalDisplayMode('chart')}
+                disabled={data.length === 0}
+              >
+                Gráfico
+              </Button>
+            </div>
+          )}
+        </div>
 
         <DataTableViewOptions table={table} />
       </div>
 
       {viewMode === 'total' ? (
-        <TableContent table={table} columnsLength={columns.length} />
+        totalDisplayMode === 'chart' ? (
+          <InvestmentLineChart data={data} />
+        ) : (
+          <TableContent table={table} columnsLength={columns.length} />
+        )
       ) : groupedByYear.length ? (
         <div className="space-y-8">
           {groupedByYear.map(({ year, months }) => (
