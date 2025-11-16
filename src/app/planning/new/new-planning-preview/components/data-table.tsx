@@ -28,8 +28,6 @@ import {
 import { DataTableViewOptions } from './data-table-view-options'
 import { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 
 interface DataTableProps {
   columns: ColumnDef<MonthlyInvestmentInfo, unknown>[]
@@ -129,26 +127,14 @@ export function DataTable({ columns, data }: DataTableProps) {
       ) : groupedByYear.length ? (
         <div className="space-y-8">
           {groupedByYear.map(({ year, months }) => (
-            <div key={year} className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold">{year}</h3>
-                <span className="text-sm text-muted-foreground">
-                  {months.length} {months.length > 1 ? 'meses' : 'mês'}
-                </span>
-              </div>
-
-              <div className="grid gap-4">
-                {months.map((month) => (
-                  <PartialMonthTable
-                    key={month.id}
-                    columns={columns}
-                    data={[month]}
-                    columnVisibility={columnVisibility}
-                    onColumnVisibilityChange={setColumnVisibility}
-                  />
-                ))}
-              </div>
-            </div>
+            <PartialYearTable
+              key={year}
+              year={year}
+              months={months}
+              columns={columns}
+              columnVisibility={columnVisibility}
+              onColumnVisibilityChange={setColumnVisibility}
+            />
           ))}
         </div>
       ) : (
@@ -160,21 +146,23 @@ export function DataTable({ columns, data }: DataTableProps) {
   )
 }
 
-type PartialMonthTableProps = {
+type PartialYearTableProps = {
+  year: number
+  months: MonthlyInvestmentInfo[]
   columns: ColumnDef<MonthlyInvestmentInfo, unknown>[]
-  data: MonthlyInvestmentInfo[]
   columnVisibility: VisibilityState
   onColumnVisibilityChange: OnChangeFn<VisibilityState>
 }
 
-function PartialMonthTable({
+function PartialYearTable({
+  year,
+  months,
   columns,
-  data,
   columnVisibility,
   onColumnVisibilityChange,
-}: PartialMonthTableProps) {
+}: PartialYearTableProps) {
   const table = useReactTable({
-    data,
+    data: months,
     columns,
     state: {
       columnVisibility,
@@ -185,13 +173,15 @@ function PartialMonthTable({
     getCoreRowModel: getCoreRowModel(),
   })
 
-  const dateLabel = format(new Date(data[0].investmentDate), "MMMM 'de' yyyy", {
-    locale: ptBR,
-  })
-
   return (
-    <div className="space-y-2">
-      <p className="text-sm font-medium capitalize">{dateLabel}</p>
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <h3 className="text-xl font-semibold">{year}</h3>
+        <span className="text-sm text-muted-foreground">
+          {months.length} {months.length > 1 ? 'meses' : 'mês'}
+        </span>
+      </div>
+
       <TableContent table={table} columnsLength={columns.length} />
     </div>
   )
