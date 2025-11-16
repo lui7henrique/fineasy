@@ -9,7 +9,7 @@ import { formatCurrency } from '@/utils/format-currency'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Separator } from '@/components/ui/separator'
-import { TrendingDown, TrendingUp } from 'lucide-react'
+import { TrendingUp } from 'lucide-react'
 import {
   Tooltip,
   TooltipTrigger,

@@ -25,24 +25,67 @@ import {
 } from '@/components/ui/table'
 import { DataTableViewOptions } from './data-table-view-options'
 import { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
-import { cn } from '@/lib/utils'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-interface DataTableProps<TData extends MonthlyInvestmentInfo, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+interface DataTableProps {
+  columns: ColumnDef<MonthlyInvestmentInfo, unknown>[]
+  data: MonthlyInvestmentInfo[]
 }
 
-export function DataTable<TData extends MonthlyInvestmentInfo, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+type ViewMode = 'total' | 'parcial'
+
+const groupInvestmentsByYear = (
+  investments: MonthlyInvestmentInfo[],
+): MonthlyInvestmentInfo[] => {
+  const grouped = investments.reduce<Record<string, MonthlyInvestmentInfo>>(
+    (acc, investment) => {
+      const year = new Date(investment.investmentDate).getFullYear()
+      const key = year.toString()
+
+      if (!acc[key]) {
+        acc[key] = {
+          ...investment,
+          id: key,
+          monthlyInvestment: 0,
+          monthlyReturn: 0,
+          investedAmount: investment.investedAmount,
+          accumulatedAmount: investment.accumulatedAmount,
+          accumulatedReturns: investment.accumulatedReturns,
+          investmentDate: new Date(investment.investmentDate),
+        }
+      }
+
+      acc[key].monthlyInvestment += investment.monthlyInvestment
+      acc[key].monthlyReturn += investment.monthlyReturn
+      acc[key].investedAmount = investment.investedAmount
+      acc[key].accumulatedAmount = investment.accumulatedAmount
+      acc[key].accumulatedReturns = investment.accumulatedReturns
+      acc[key].investmentDate = new Date(investment.investmentDate)
+
+      return acc
+    },
+    {},
+  )
+
+  return Object.values(grouped).sort(
+    (a, b) =>
+      new Date(a.investmentDate).getTime() -
+      new Date(b.investmentDate).getTime(),
+  )
+}
+
+export function DataTable({ columns, data }: DataTableProps) {
+  const [viewMode, setViewMode] = React.useState<ViewMode>('total')
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
 
   const [sorting, setSorting] = React.useState<SortingState>([])
 
+  const groupedData = React.useMemo(() => groupInvestmentsByYear(data), [data])
+  const tableData = viewMode === 'total' ? data : groupedData
+
   const table = useReactTable({
-    data,
+    data: tableData,
     columns,
     initialState: {},
     state: {
@@ -62,16 +105,20 @@ export function DataTable<TData extends MonthlyInvestmentInfo, TValue>({
   })
 
   React.useEffect(() => {
-    table.setPageSize(data.length)
-  }, [table, data])
+    table.setPageSize(tableData.length)
+  }, [table, tableData.length])
 
   return (
-    <div className="space-y-4 mt-4">
-      <div className="flex justify-between">
-        <div>
-          <button>total</button>
-          <button>parcial</button>
-        </div>
+    <Tabs
+      value={viewMode}
+      onValueChange={(value) => setViewMode(value as ViewMode)}
+      className="mt-4 space-y-4"
+    >
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <TabsList>
+          <TabsTrigger value="total">Total</TabsTrigger>
+          <TabsTrigger value="parcial">Parcial</TabsTrigger>
+        </TabsList>
 
         <DataTableViewOptions table={table} />
       </div>
@@ -127,6 +174,6 @@ export function DataTable<TData extends MonthlyInvestmentInfo, TValue>({
           </TableBody>
         </Table>
       </div>
-    </div>
+    </Tabs>
   )
 }
