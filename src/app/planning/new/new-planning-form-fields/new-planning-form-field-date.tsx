@@ -25,17 +25,14 @@ import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
-const today = new Date()
-
 export const NewPlanningFormFieldDate = () => {
   const form = useFormContext<NewPlanningFormTypeInput>()
 
   return (
-    <FormField
-      control={form.control}
-      name="investmentDate"
-      defaultValue={today}
-      render={({ field }) => (
+      <FormField
+        control={form.control}
+        name="investmentDate"
+        render={({ field }) => (
         <FormItem>
           <FormLabel>Data</FormLabel>
 
@@ -49,8 +46,8 @@ export const NewPlanningFormFieldDate = () => {
                     !field.value && 'text-muted-foreground',
                   )}
                 >
-                  {field.value ? (
-                    format(field.value, "dd 'de' MMMM", {
+                    {field.value ? (
+                      format(field.value, "dd 'de' MMMM", {
                       locale: ptBR,
                     })
                   ) : (
@@ -64,7 +61,7 @@ export const NewPlanningFormFieldDate = () => {
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 mode="single"
-                selected={field.value}
+                  selected={field.value}
                 onSelect={field.onChange}
                 disabled={(date) =>
                   date > new Date() || date < new Date('1900-01-01')

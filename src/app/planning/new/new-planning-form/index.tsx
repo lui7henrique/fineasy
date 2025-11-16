@@ -38,6 +38,8 @@ export const NewPlanningForm = () => {
       investmentTime: '10',
       investmentRate: '100',
       cdiRate: String(cdiRate),
+      investmentDate: new Date(),
+      investment: '1000',
     },
   })
 
@@ -59,7 +61,7 @@ export const NewPlanningForm = () => {
     try {
       const returns = calculateMonthlyReturns({
         cdiRate: parsedForm.cdiRate,
-        investmentDate: new Date(),
+        investmentDate: parsedForm.investmentDate,
         investmentRate: parsedForm.investmentRate,
         investmentTimeInMonths: getFormattedInvestmentTime(),
         investmentValue: parsedForm.investment,
