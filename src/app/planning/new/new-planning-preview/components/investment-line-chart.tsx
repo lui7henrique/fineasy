@@ -34,14 +34,21 @@ const COLORS = {
   accumulated: 'hsl(var(--primary))',
 }
 
-const CustomTooltip = (
-  props: TooltipProps<number, string>,
-): JSX.Element | null => {
-  if (!props.active || !props.payload?.length) {
+type CustomTooltipProps = TooltipProps<number, string> & {
+  payload?: {
+    payload: ChartDatum
+  }[]
+}
+
+const CustomTooltip = ({
+  active,
+  payload,
+}: CustomTooltipProps): JSX.Element | null => {
+  if (!active || !payload?.length) {
     return null
   }
 
-  const { payload: item } = props.payload[0]
+  const { payload: item } = payload[0]
   const chartDatum = item as ChartDatum
 
   return (
