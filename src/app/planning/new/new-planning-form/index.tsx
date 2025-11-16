@@ -2,7 +2,7 @@
 
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { DataTable } from '../new-planning-preview/components/data-table'
 import { columns } from '../new-planning-preview/components/columns'
@@ -27,6 +27,7 @@ export const NewPlanningForm = () => {
   const [newPlanning, setNewPlanning] = useState<
     MonthlyInvestmentInfo[] | null
   >(null)
+  const resultsRef = useRef<HTMLDivElement | null>(null)
 
   const { cdiRate } = useCdi()
 
@@ -84,6 +85,15 @@ export const NewPlanningForm = () => {
     }
   }
 
+  useEffect(() => {
+    if (newPlanning && resultsRef.current) {
+      resultsRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }
+  }, [newPlanning])
+
   return (
     <Form {...form}>
       <div className="max-w-app py-6 mx-auto px-4 space-y-8">
@@ -94,7 +104,7 @@ export const NewPlanningForm = () => {
         {newPlanning && <Separator />}
 
         {newPlanning && (
-          <>
+          <div ref={resultsRef} className="space-y-4">
             <div className="space-y-2">
               <h2 className="text-2xl font-bold tracking-tight">
                 Acompanhe seus rendimentos mensais
@@ -108,7 +118,7 @@ export const NewPlanningForm = () => {
             </div>
 
             <DataTable data={newPlanning} columns={columns} />
-          </>
+          </div>
         )}
       </div>
     </Form>
