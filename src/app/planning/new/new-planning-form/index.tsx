@@ -31,11 +31,7 @@ export const NewPlanningForm = () => {
 
   const { cdiRate } = useCdi()
 
-  const form = useForm<
-    NewPlanningFormTypeInput,
-    unknown,
-    NewPlanningFormTypeOutput
-  >({
+  const form = useForm<NewPlanningFormTypeInput>({
     resolver: zodResolver(FormSchema),
     mode: 'onChange',
     defaultValues: {
@@ -45,7 +41,9 @@ export const NewPlanningForm = () => {
     },
   })
 
-  async function onSubmit(form: NewPlanningFormTypeOutput) {
+  async function onSubmit(formValues: NewPlanningFormTypeInput) {
+    const parsedForm = FormSchema.parse(formValues)
+
     const getFormattedInvestmentTime = () => {
       const multiplier: Record<
         NewPlanningFormTypeOutput['timeMetric'],
@@ -55,16 +53,16 @@ export const NewPlanningForm = () => {
         years: 12,
       }
 
-      return form.investmentTime * multiplier[form.timeMetric]
+      return parsedForm.investmentTime * multiplier[parsedForm.timeMetric]
     }
 
     try {
       const returns = calculateMonthlyReturns({
-        cdiRate: form.cdiRate,
+        cdiRate: parsedForm.cdiRate,
         investmentDate: new Date(),
-        investmentRate: form.investmentRate,
+        investmentRate: parsedForm.investmentRate,
         investmentTimeInMonths: getFormattedInvestmentTime(),
-        investmentValue: form.investment,
+        investmentValue: parsedForm.investment,
       })
 
       setNewPlanning(returns)
