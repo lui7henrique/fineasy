@@ -33,7 +33,7 @@ export const NewPlanningForm = () => {
 
   const form = useForm<
     NewPlanningFormTypeInput,
-    typeof Form,
+    unknown,
     NewPlanningFormTypeOutput
   >({
     resolver: zodResolver(FormSchema),
