@@ -80,7 +80,10 @@ export function DataTable({ columns, data }: DataTableProps) {
 
   const [sorting, setSorting] = React.useState<SortingState>([])
 
-  const groupedByYear = React.useMemo(() => groupInvestmentsByYear(data), [data])
+  const groupedByYear = React.useMemo(
+    () => groupInvestmentsByYear(data),
+    [data],
+  )
 
   const table = useReactTable({
     data,
@@ -103,8 +106,8 @@ export function DataTable({ columns, data }: DataTableProps) {
   })
 
   React.useEffect(() => {
-      table.setPageSize(data.length)
-    }, [table, data.length])
+    table.setPageSize(data.length)
+  }, [table, data.length])
 
   return (
     <Tabs
@@ -121,39 +124,38 @@ export function DataTable({ columns, data }: DataTableProps) {
         <DataTableViewOptions table={table} />
       </div>
 
-        {viewMode === 'total' ? (
-          <TableContent table={table} columnsLength={columns.length} />
-        ) : groupedByYear.length ? (
-          <div className="space-y-8">
-            {groupedByYear.map(({ year, months }) => (
-              <div key={year} className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold">{year}</h3>
-                  <span className="text-sm text-muted-foreground">
-                    {months.length}{' '}
-                    {months.length > 1 ? 'meses' : 'mês'}
-                  </span>
-                </div>
-
-                <div className="grid gap-4">
-                  {months.map((month) => (
-                    <PartialMonthTable
-                      key={month.id}
-                      columns={columns}
-                      data={[month]}
-                      columnVisibility={columnVisibility}
-                      onColumnVisibilityChange={setColumnVisibility}
-                    />
-                  ))}
-                </div>
+      {viewMode === 'total' ? (
+        <TableContent table={table} columnsLength={columns.length} />
+      ) : groupedByYear.length ? (
+        <div className="space-y-8">
+          {groupedByYear.map(({ year, months }) => (
+            <div key={year} className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-semibold">{year}</h3>
+                <span className="text-sm text-muted-foreground">
+                  {months.length} {months.length > 1 ? 'meses' : 'mês'}
+                </span>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-md border p-6 text-center text-sm text-muted-foreground">
-            Nenhum resultado.
-          </div>
-        )}
+
+              <div className="grid gap-4">
+                {months.map((month) => (
+                  <PartialMonthTable
+                    key={month.id}
+                    columns={columns}
+                    data={[month]}
+                    columnVisibility={columnVisibility}
+                    onColumnVisibilityChange={setColumnVisibility}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-md border p-6 text-center text-sm text-muted-foreground">
+          Nenhum resultado.
+        </div>
+      )}
     </Tabs>
   )
 }
@@ -183,13 +185,9 @@ function PartialMonthTable({
     getCoreRowModel: getCoreRowModel(),
   })
 
-  const dateLabel = format(
-    new Date(data[0].investmentDate),
-    "MMMM 'de' yyyy",
-    {
-      locale: ptBR,
-    },
-  )
+  const dateLabel = format(new Date(data[0].investmentDate), "MMMM 'de' yyyy", {
+    locale: ptBR,
+  })
 
   return (
     <div className="space-y-2">
@@ -235,20 +233,14 @@ function TableContent({
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext(),
-                    )}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell
-                colSpan={columnsLength}
-                className="h-24 text-center"
-              >
+              <TableCell colSpan={columnsLength} className="h-24 text-center">
                 No results.
               </TableCell>
             </TableRow>
