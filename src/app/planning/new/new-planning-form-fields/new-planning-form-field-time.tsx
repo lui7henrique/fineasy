@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { NewPlanningFormTypeInput } from '../new-planning-form'
+import type { NewPlanningFormTypeInput } from '../new-planning-form'
 
 export const NewPlanningFormFieldTime = () => {
   const form = useFormContext<NewPlanningFormTypeInput>()

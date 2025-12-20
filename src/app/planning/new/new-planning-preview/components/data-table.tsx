@@ -1,12 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import type {
   ColumnDef,
   OnChangeFn,
+  Table as ReactTableInstance,
   SortingState,
   VisibilityState,
-  Table as ReactTableInstance,
 } from '@tanstack/react-table'
 import {
   flexRender,
@@ -18,6 +17,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import * as React from 'react'
 
 import {
   Table,
@@ -27,9 +27,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DataTableViewOptions } from './data-table-view-options'
-import type { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import type { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
+import { DataTableViewOptions } from './data-table-view-options'
 import { InvestmentLineChart } from './investment-line-chart'
 
 interface DataTableProps {
@@ -45,7 +45,7 @@ type GroupedInvestments = {
 }
 
 const groupInvestmentsByYear = (
-  investments: MonthlyInvestmentInfo[],
+  investments: MonthlyInvestmentInfo[]
 ): GroupedInvestments[] => {
   const grouped = investments.reduce<Record<string, MonthlyInvestmentInfo[]>>(
     (acc, investment) => {
@@ -59,7 +59,7 @@ const groupInvestmentsByYear = (
       acc[year].push(investment)
       return acc
     },
-    {},
+    {}
   )
 
   return Object.entries(grouped)
@@ -68,7 +68,7 @@ const groupInvestmentsByYear = (
       months: months.sort(
         (a, b) =>
           new Date(a.investmentDate).getTime() -
-          new Date(b.investmentDate).getTime(),
+          new Date(b.investmentDate).getTime()
       ),
     }))
     .sort((a, b) => a.year - b.year)
@@ -76,14 +76,30 @@ const groupInvestmentsByYear = (
 
 export function DataTable({ columns, data }: DataTableProps) {
   const [viewMode, setViewMode] = React.useState<ViewMode>('total')
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-
   const [sorting, setSorting] = React.useState<SortingState>([])
+
+  const hasInflationData =
+    data.length > 0 && data[0].realAccumulatedAmount !== undefined
+
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({
+      'Valor real': false,
+      'Rendimento real': false,
+      'Perda inflação': false,
+    })
+
+  React.useEffect(() => {
+    setColumnVisibility((prev) => ({
+      ...prev,
+      'Valor real': hasInflationData,
+      'Rendimento real': hasInflationData,
+      'Perda inflação': hasInflationData,
+    }))
+  }, [hasInflationData])
 
   const groupedByYear = React.useMemo(
     () => groupInvestmentsByYear(data),
-    [data],
+    [data]
   )
 
   const table = useReactTable({
@@ -212,7 +228,7 @@ function TableContent({
                     ? null
                     : flexRender(
                         header.column.columnDef.header,
-                        header.getContext(),
+                        header.getContext()
                       )}
                 </TableHead>
               ))}

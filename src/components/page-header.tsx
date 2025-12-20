@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import Balance from 'react-wrap-balancer'
 
 import { cn } from '@/lib/utils'

@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { NewPlanningFormTypeInput } from "../new-planning-form";
+import type { NewPlanningFormTypeInput } from "../new-planning-form";
 import {
   Popover,
   PopoverContent,

@@ -1,5 +1,5 @@
 'use client'
-import { createContext, ReactNode, useContext, useState } from 'react'
+import { createContext, type ReactNode, useContext, useState } from 'react'
 
 export type CdiContextType = {
   cdiRate: number

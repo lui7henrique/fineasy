@@ -1,24 +1,24 @@
 'use client'
 
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
 import { useEffect, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import type { z } from 'zod'
 
-import { DataTable } from '../new-planning-preview/components/data-table'
-import { columns } from '../new-planning-preview/components/columns'
 import { NewPlanningFormFields } from '../new-planning-form-fields'
+import { columns } from '../new-planning-preview/components/columns'
+import { DataTable } from '../new-planning-preview/components/data-table'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Form } from '@/components/ui/form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-import { FormSchema } from '../schema'
+import { Separator } from '@/components/ui/separator'
+import { toast } from '@/components/ui/use-toast'
+import { useCdi } from '@/context/cdi/cdi'
 import {
-  MonthlyInvestmentInfo,
+  type MonthlyInvestmentInfo,
   calculateMonthlyReturns,
 } from '@/utils/calculate-monthly-returns'
-import { toast } from '@/components/ui/use-toast'
-import { Separator } from '@/components/ui/separator'
-import { useCdi } from '@/context/cdi/cdi'
+import { FormSchema } from '../schema'
 
 export type NewPlanningFormTypeInput = z.input<typeof FormSchema>
 export type NewPlanningFormTypeOutput = z.output<typeof FormSchema>
@@ -40,6 +40,8 @@ export const NewPlanningForm = () => {
       cdiRate: String(cdiRate),
       investmentDate: new Date(),
       investment: '1000',
+      inflation: false,
+      inflationRate: '4.5',
     },
   })
 
@@ -65,6 +67,8 @@ export const NewPlanningForm = () => {
         investmentRate: parsedForm.investmentRate,
         investmentTimeInMonths: getFormattedInvestmentTime(),
         investmentValue: parsedForm.investment,
+        applyInflation: parsedForm.inflation ?? false,
+        inflationRate: parsedForm.inflationRate ?? 4.5,
       })
 
       setNewPlanning(returns)

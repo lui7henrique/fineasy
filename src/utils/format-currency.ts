@@ -1,5 +1,5 @@
 export function formatCurrency(value: number) {
-  if (typeof value !== 'number' || isNaN(value)) {
+  if (typeof value !== 'number' || Number.isNaN(value)) {
     throw new Error('The provided value is not a valid number.')
   }
 

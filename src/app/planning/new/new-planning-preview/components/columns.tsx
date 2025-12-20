@@ -1,15 +1,15 @@
 'use client'
 
-import { ColumnDef } from '@tanstack/react-table'
+import type { ColumnDef } from '@tanstack/react-table'
 
 import { DataTableColumnHeader } from './data-table-column-header'
 
-import { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
+import type { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
 import { formatCurrency } from '@/utils/format-currency'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Separator } from '@/components/ui/separator'
-import { TrendingUp } from 'lucide-react'
+import { TrendingDown, TrendingUp } from 'lucide-react'
 import {
   Tooltip,
   TooltipTrigger,
@@ -163,5 +163,82 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
     cell: ({ row }) => (
       <div>{formatCurrency(row.getValue('Rendimento acumulado'))}</div>
     ),
+  },
+  {
+    id: 'Valor real',
+    accessorKey: 'realAccumulatedAmount',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Valor real"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const realAmount = row.original.realAccumulatedAmount
+      if (realAmount === undefined) return null
+
+      return (
+        <div className="whitespace-nowrap text-blue-600 dark:text-blue-400">
+          {formatCurrency(realAmount)}
+        </div>
+      )
+    },
+  },
+  {
+    id: 'Rendimento real',
+    accessorKey: 'realAccumulatedReturns',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Rendimento real"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const realReturns = row.original.realAccumulatedReturns
+      if (realReturns === undefined) return null
+
+      const isPositive = realReturns > 0
+
+      return (
+        <div
+          className={`whitespace-nowrap ${isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
+        >
+          {formatCurrency(realReturns)}
+        </div>
+      )
+    },
+  },
+  {
+    id: 'Perda inflação',
+    accessorKey: 'inflationLoss',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Perda inflação"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const inflationLoss = row.original.inflationLoss
+      if (inflationLoss === undefined) return null
+
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-1.5 text-orange-600 dark:text-orange-400 whitespace-nowrap">
+                <TrendingDown className="w-4 h-4" />
+                {formatCurrency(inflationLoss)}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              Perda de poder de compra devido à inflação
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )
+    },
   },
 ]
