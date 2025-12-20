@@ -241,4 +241,88 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
       )
     },
   },
+  {
+    id: 'Alíquota IR',
+    accessorKey: 'taxRate',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Alíquota IR"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const taxRate = row.original.taxRate
+      if (taxRate === undefined) return null
+
+      return (
+        <div className="whitespace-nowrap text-amber-600 dark:text-amber-400">
+          {taxRate}%
+        </div>
+      )
+    },
+  },
+  {
+    id: 'Imposto',
+    accessorKey: 'taxAmount',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Imposto"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const taxAmount = row.original.taxAmount
+      if (taxAmount === undefined) return null
+
+      return (
+        <div className="whitespace-nowrap text-red-600 dark:text-red-400">
+          {formatCurrency(taxAmount)}
+        </div>
+      )
+    },
+  },
+  {
+    id: 'Valor líquido',
+    accessorKey: 'netAccumulatedAmount',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Valor líquido"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const netAmount = row.original.netAccumulatedAmount
+      if (netAmount === undefined) return null
+
+      return (
+        <div className="whitespace-nowrap font-medium text-green-600 dark:text-green-400">
+          {formatCurrency(netAmount)}
+        </div>
+      )
+    },
+  },
+  {
+    id: 'Rendimento líquido',
+    accessorKey: 'netAccumulatedReturns',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Rendimento líquido"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const netReturns = row.original.netAccumulatedReturns
+      if (netReturns === undefined) return null
+
+      return (
+        <div className="whitespace-nowrap text-green-600 dark:text-green-400">
+          {formatCurrency(netReturns)}
+        </div>
+      )
+    },
+  },
 ]

@@ -42,6 +42,8 @@ export const NewPlanningForm = () => {
       investment: '1000',
       inflation: false,
       inflationRate: '4.5',
+      businessDaysOnly: false,
+      applyTaxes: false,
     },
   })
 
@@ -69,6 +71,8 @@ export const NewPlanningForm = () => {
         investmentValue: parsedForm.investment,
         applyInflation: parsedForm.inflation ?? false,
         inflationRate: parsedForm.inflationRate ?? 4.5,
+        businessDaysOnly: parsedForm.businessDaysOnly ?? false,
+        applyTaxes: parsedForm.applyTaxes ?? false,
       })
 
       setNewPlanning(returns)

@@ -23,4 +23,6 @@ export const FormSchema = z.object({
   investmentDate: z.date({ required_error: 'Data é um campo obrigatório.' }),
   inflation: z.boolean().default(false).optional(),
   inflationRate: inflationRateField.optional().default(4.5),
+  businessDaysOnly: z.boolean().default(false).optional(),
+  applyTaxes: z.boolean().default(false).optional(),
 })

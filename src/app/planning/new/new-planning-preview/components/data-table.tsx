@@ -81,11 +81,17 @@ export function DataTable({ columns, data }: DataTableProps) {
   const hasInflationData =
     data.length > 0 && data[0].realAccumulatedAmount !== undefined
 
+  const hasTaxData = data.length > 0 && data[0].taxRate !== undefined
+
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({
       'Valor real': false,
       'Rendimento real': false,
       'Perda inflação': false,
+      'Alíquota IR': false,
+      Imposto: false,
+      'Valor líquido': false,
+      'Rendimento líquido': false,
     })
 
   React.useEffect(() => {
@@ -94,8 +100,12 @@ export function DataTable({ columns, data }: DataTableProps) {
       'Valor real': hasInflationData,
       'Rendimento real': hasInflationData,
       'Perda inflação': hasInflationData,
+      'Alíquota IR': hasTaxData,
+      Imposto: hasTaxData,
+      'Valor líquido': hasTaxData,
+      'Rendimento líquido': hasTaxData,
     }))
-  }, [hasInflationData])
+  }, [hasInflationData, hasTaxData])
 
   const groupedByYear = React.useMemo(
     () => groupInvestmentsByYear(data),
