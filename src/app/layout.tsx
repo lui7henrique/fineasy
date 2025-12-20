@@ -6,11 +6,18 @@ import { Header } from '@/components/header'
 import { Inter } from 'next/font/google'
 import { cn } from '@/lib/utils'
 import { CdiContextProvider } from '@/context/cdi/cdi'
-import { getCdiRate } from 'selic'
+import { getSafeCdiRate } from '@/lib/cdi-rate'
 
 export const metadata = {
   title: 'Fineasy',
   description: 'Finanças facilitadas',
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 const inter = Inter({
@@ -23,7 +30,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const cdiRate = await getCdiRate()
+  const cdiRate = await getSafeCdiRate()
 
   return (
     <html lang="pt-BR" suppressHydrationWarning>

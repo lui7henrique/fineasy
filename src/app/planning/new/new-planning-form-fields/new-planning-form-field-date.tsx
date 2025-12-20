@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import { CalendarIcon } from 'lucide-react'
+import { CalendarIcon } from "lucide-react";
 
-import { useFormContext } from 'react-hook-form'
+import { useFormContext } from "react-hook-form";
 
 import {
   FormControl,
@@ -11,30 +11,27 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
+} from "@/components/ui/form";
 
-import { NewPlanningFormTypeInput } from '../new-planning-form'
+import type { NewPlanningFormTypeInput } from "../new-planning-form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover'
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import { cn } from '@/lib/utils'
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
-
-const today = new Date()
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export const NewPlanningFormFieldDate = () => {
-  const form = useFormContext<NewPlanningFormTypeInput>()
+  const form = useFormContext<NewPlanningFormTypeInput>();
 
   return (
     <FormField
       control={form.control}
       name="investmentDate"
-      defaultValue={today}
       render={({ field }) => (
         <FormItem>
           <FormLabel>Data</FormLabel>
@@ -43,10 +40,10 @@ export const NewPlanningFormFieldDate = () => {
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
-                  variant={'outline'}
+                  variant={"outline"}
                   className={cn(
-                    'w-full pl-3 text-left font-normal',
-                    !field.value && 'text-muted-foreground',
+                    "w-full pl-3 text-left font-normal",
+                    !field.value && "text-muted-foreground",
                   )}
                 >
                   {field.value ? (
@@ -67,7 +64,7 @@ export const NewPlanningFormFieldDate = () => {
                 selected={field.value}
                 onSelect={field.onChange}
                 disabled={(date) =>
-                  date > new Date() || date < new Date('1900-01-01')
+                  date > new Date() || date < new Date("1900-01-01")
                 }
                 initialFocus
               />
@@ -81,5 +78,5 @@ export const NewPlanningFormFieldDate = () => {
         </FormItem>
       )}
     />
-  )
-}
+  );
+};

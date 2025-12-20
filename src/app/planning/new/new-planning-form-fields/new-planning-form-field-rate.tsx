@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { NewPlanningFormTypeInput } from '../new-planning-form'
+import type { NewPlanningFormTypeInput } from '../new-planning-form'
 
 export const NewPlanningFormFieldRate = () => {
   const form = useFormContext<NewPlanningFormTypeInput>()

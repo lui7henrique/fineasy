@@ -1,24 +1,24 @@
 'use client'
 
-import { z } from 'zod'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useState } from 'react'
+import type { z } from 'zod'
 
-import { DataTable } from '../new-planning-preview/components/data-table'
-import { columns } from '../new-planning-preview/components/columns'
 import { NewPlanningFormFields } from '../new-planning-form-fields'
+import { columns } from '../new-planning-preview/components/columns'
+import { DataTable } from '../new-planning-preview/components/data-table'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Form } from '@/components/ui/form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-import { FormSchema } from '../schema'
+import { Separator } from '@/components/ui/separator'
+import { toast } from '@/components/ui/use-toast'
+import { useCdi } from '@/context/cdi/cdi'
 import {
-  MonthlyInvestmentInfo,
+  type MonthlyInvestmentInfo,
   calculateMonthlyReturns,
 } from '@/utils/calculate-monthly-returns'
-import { toast } from '@/components/ui/use-toast'
-import { Separator } from '@/components/ui/separator'
-import { useCdi } from '@/context/cdi/cdi'
+import { FormSchema } from '../schema'
 
 export type NewPlanningFormTypeInput = z.input<typeof FormSchema>
 export type NewPlanningFormTypeOutput = z.output<typeof FormSchema>
@@ -27,24 +27,29 @@ export const NewPlanningForm = () => {
   const [newPlanning, setNewPlanning] = useState<
     MonthlyInvestmentInfo[] | null
   >(null)
+  const resultsRef = useRef<HTMLDivElement | null>(null)
 
   const { cdiRate } = useCdi()
 
-  const form = useForm<
-    NewPlanningFormTypeInput,
-    typeof Form,
-    NewPlanningFormTypeOutput
-  >({
+  const form = useForm<NewPlanningFormTypeInput>({
     resolver: zodResolver(FormSchema),
     mode: 'onChange',
     defaultValues: {
       investmentTime: '10',
       investmentRate: '100',
       cdiRate: String(cdiRate),
+      investmentDate: new Date(),
+      investment: '1000',
+      inflation: false,
+      inflationRate: '4.5',
+      businessDaysOnly: false,
+      applyTaxes: false,
     },
   })
 
-  async function onSubmit(form: NewPlanningFormTypeOutput) {
+  async function onSubmit(formValues: NewPlanningFormTypeInput) {
+    const parsedForm = FormSchema.parse(formValues)
+
     const getFormattedInvestmentTime = () => {
       const multiplier: Record<
         NewPlanningFormTypeOutput['timeMetric'],
@@ -54,16 +59,20 @@ export const NewPlanningForm = () => {
         years: 12,
       }
 
-      return form.investmentTime * multiplier[form.timeMetric]
+      return parsedForm.investmentTime * multiplier[parsedForm.timeMetric]
     }
 
     try {
       const returns = calculateMonthlyReturns({
-        cdiRate: form.cdiRate,
-        investmentDate: new Date(),
-        investmentRate: form.investmentRate,
+        cdiRate: parsedForm.cdiRate,
+        investmentDate: parsedForm.investmentDate,
+        investmentRate: parsedForm.investmentRate,
         investmentTimeInMonths: getFormattedInvestmentTime(),
-        investmentValue: form.investment,
+        investmentValue: parsedForm.investment,
+        applyInflation: parsedForm.inflation ?? false,
+        inflationRate: parsedForm.inflationRate ?? 4.5,
+        businessDaysOnly: parsedForm.businessDaysOnly ?? false,
+        applyTaxes: parsedForm.applyTaxes ?? false,
       })
 
       setNewPlanning(returns)
@@ -84,6 +93,15 @@ export const NewPlanningForm = () => {
     }
   }
 
+  useEffect(() => {
+    if (newPlanning && resultsRef.current) {
+      resultsRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }
+  }, [newPlanning])
+
   return (
     <Form {...form}>
       <div className="max-w-app py-6 mx-auto px-4 space-y-8">
@@ -94,7 +112,7 @@ export const NewPlanningForm = () => {
         {newPlanning && <Separator />}
 
         {newPlanning && (
-          <>
+          <div ref={resultsRef} className="space-y-4">
             <div className="space-y-2">
               <h2 className="text-2xl font-bold tracking-tight">
                 Acompanhe seus rendimentos mensais
@@ -108,7 +126,7 @@ export const NewPlanningForm = () => {
             </div>
 
             <DataTable data={newPlanning} columns={columns} />
-          </>
+          </div>
         )}
       </div>
     </Form>

@@ -1,10 +1,10 @@
 'use client'
 
-import { ColumnDef } from '@tanstack/react-table'
+import type { ColumnDef } from '@tanstack/react-table'
 
 import { DataTableColumnHeader } from './data-table-column-header'
 
-import { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
+import type { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
 import { formatCurrency } from '@/utils/format-currency'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -163,5 +163,166 @@ export const columns: ColumnDef<MonthlyInvestmentInfo>[] = [
     cell: ({ row }) => (
       <div>{formatCurrency(row.getValue('Rendimento acumulado'))}</div>
     ),
+  },
+  {
+    id: 'Valor real',
+    accessorKey: 'realAccumulatedAmount',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Valor real"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const realAmount = row.original.realAccumulatedAmount
+      if (realAmount === undefined) return null
+
+      return (
+        <div className="whitespace-nowrap text-blue-600 dark:text-blue-400">
+          {formatCurrency(realAmount)}
+        </div>
+      )
+    },
+  },
+  {
+    id: 'Rendimento real',
+    accessorKey: 'realAccumulatedReturns',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Rendimento real"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const realReturns = row.original.realAccumulatedReturns
+      if (realReturns === undefined) return null
+
+      const isPositive = realReturns > 0
+
+      return (
+        <div
+          className={`whitespace-nowrap ${isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
+        >
+          {formatCurrency(realReturns)}
+        </div>
+      )
+    },
+  },
+  {
+    id: 'Perda inflação',
+    accessorKey: 'inflationLoss',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Perda inflação"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const inflationLoss = row.original.inflationLoss
+      if (inflationLoss === undefined) return null
+
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-1.5 text-orange-600 dark:text-orange-400 whitespace-nowrap">
+                <TrendingDown className="w-4 h-4" />
+                {formatCurrency(inflationLoss)}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              Perda de poder de compra devido à inflação
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )
+    },
+  },
+  {
+    id: 'Alíquota IR',
+    accessorKey: 'taxRate',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Alíquota IR"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const taxRate = row.original.taxRate
+      if (taxRate === undefined) return null
+
+      return (
+        <div className="whitespace-nowrap text-amber-600 dark:text-amber-400">
+          {taxRate}%
+        </div>
+      )
+    },
+  },
+  {
+    id: 'Imposto',
+    accessorKey: 'taxAmount',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Imposto"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const taxAmount = row.original.taxAmount
+      if (taxAmount === undefined) return null
+
+      return (
+        <div className="whitespace-nowrap text-red-600 dark:text-red-400">
+          {formatCurrency(taxAmount)}
+        </div>
+      )
+    },
+  },
+  {
+    id: 'Valor líquido',
+    accessorKey: 'netAccumulatedAmount',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Valor líquido"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const netAmount = row.original.netAccumulatedAmount
+      if (netAmount === undefined) return null
+
+      return (
+        <div className="whitespace-nowrap font-medium text-green-600 dark:text-green-400">
+          {formatCurrency(netAmount)}
+        </div>
+      )
+    },
+  },
+  {
+    id: 'Rendimento líquido',
+    accessorKey: 'netAccumulatedReturns',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Rendimento líquido"
+        className="whitespace-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const netReturns = row.original.netAccumulatedReturns
+      if (netReturns === undefined) return null
+
+      return (
+        <div className="whitespace-nowrap text-green-600 dark:text-green-400">
+          {formatCurrency(netReturns)}
+        </div>
+      )
+    },
   },
 ]

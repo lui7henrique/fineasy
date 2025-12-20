@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { NewPlanningFormTypeInput } from '../new-planning-form'
+import type { NewPlanningFormTypeInput } from '../new-planning-form'
 
 export const NewPlanningFormFieldTime = () => {
   const form = useFormContext<NewPlanningFormTypeInput>()
@@ -42,8 +42,8 @@ export const NewPlanningFormFieldTime = () => {
                 defaultValue="years"
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className="w-full" placeholder="Anos">
-                      <SelectValue placeholder="" />
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Anos" />
                     </SelectTrigger>
 
                     <SelectContent>

@@ -1,4 +1,4 @@
-import { addMonths } from 'date-fns'
+import { addMonths, differenceInDays } from 'date-fns'
 import { formatValue } from './format-value'
 
 export type MonthlyInvestmentInfo = {
@@ -9,6 +9,13 @@ export type MonthlyInvestmentInfo = {
   monthlyReturn: number
   monthlyInvestment: number
   accumulatedReturns: number
+  realAccumulatedAmount?: number
+  realAccumulatedReturns?: number
+  inflationLoss?: number
+  taxRate?: number
+  taxAmount?: number
+  netAccumulatedAmount?: number
+  netAccumulatedReturns?: number
 }
 
 type CalculateMonthlyReturnsOptions = {
@@ -17,10 +24,21 @@ type CalculateMonthlyReturnsOptions = {
   investmentRate: number
   investmentDate: Date
   cdiRate: number
+  applyInflation?: boolean
+  inflationRate?: number
+  businessDaysOnly?: boolean
+  applyTaxes?: boolean
+}
+
+function getTaxRate(days: number): number {
+  if (days <= 180) return 22.5
+  if (days <= 360) return 20
+  if (days <= 720) return 17.5
+  return 15
 }
 
 export function calculateMonthlyReturns(
-  options: CalculateMonthlyReturnsOptions,
+  options: CalculateMonthlyReturnsOptions
 ): MonthlyInvestmentInfo[] {
   const {
     investmentValue,
@@ -28,6 +46,10 @@ export function calculateMonthlyReturns(
     investmentDate,
     investmentRate,
     cdiRate,
+    applyInflation = false,
+    inflationRate = 4.5,
+    businessDaysOnly = false,
+    applyTaxes = false,
   } = options
 
   if (
@@ -36,32 +58,81 @@ export function calculateMonthlyReturns(
     investmentRate <= 0
   ) {
     throw new Error(
-      'Investment, investmentTimeInMonths, and cdiRate must be positive values',
+      'Investment, investmentTimeInMonths, and cdiRate must be positive values'
     )
   }
 
   const monthlyReturns: MonthlyInvestmentInfo[] = []
   let accumulatedAmount = 0
 
+  const monthlyInflationRate = (1 + inflationRate / 100) ** (1 / 12) - 1
+
+  const daysPerMonth = businessDaysOnly ? 21 : 30
+  const daysPerYear = businessDaysOnly ? 252 : 365
+
+  const effectiveAnnualRate = (investmentRate / 100) * (cdiRate / 100)
+
+  const dailyRate = (1 + effectiveAnnualRate) ** (1 / daysPerYear) - 1
+
+  const monthlyRate = (1 + dailyRate) ** daysPerMonth - 1
+
+  const startDate = new Date(investmentDate)
+
   for (let month = 1; month <= investmentTimeInMonths; month++) {
-    const investmentRateReturn = formatValue((investmentRate / 100) * cdiRate)
+    accumulatedAmount += investmentValue
 
-    const monthlyReturn = formatValue(
-      Number(((investmentRateReturn / 100) * accumulatedAmount) / 12),
-    )
+    const monthlyReturn = formatValue(accumulatedAmount * monthlyRate)
 
-    accumulatedAmount += investmentValue + monthlyReturn
+    accumulatedAmount += monthlyReturn
+
     const investedAmount = investmentValue * month
 
-    monthlyReturns.push({
+    const currentDate = addMonths(startDate, month)
+
+    const monthlyInfo: MonthlyInvestmentInfo = {
       id: month.toString(),
       monthlyInvestment: investmentValue,
       monthlyReturn,
       investedAmount,
-      accumulatedAmount,
-      accumulatedReturns: accumulatedAmount - investedAmount,
-      investmentDate: addMonths(new Date(investmentDate), month),
-    })
+      accumulatedAmount: formatValue(accumulatedAmount),
+      accumulatedReturns: formatValue(accumulatedAmount - investedAmount),
+      investmentDate: currentDate,
+    }
+
+    if (applyInflation) {
+      const inflationFactor = (1 + monthlyInflationRate) ** month
+      const realAccumulatedAmount = formatValue(
+        accumulatedAmount / inflationFactor
+      )
+      const realAccumulatedReturns = formatValue(
+        realAccumulatedAmount - investedAmount
+      )
+      const inflationLoss = formatValue(
+        accumulatedAmount - realAccumulatedAmount
+      )
+
+      monthlyInfo.realAccumulatedAmount = realAccumulatedAmount
+      monthlyInfo.realAccumulatedReturns = realAccumulatedReturns
+      monthlyInfo.inflationLoss = inflationLoss
+    }
+
+    if (applyTaxes) {
+      const daysSinceStart = differenceInDays(currentDate, startDate)
+      const taxRate = getTaxRate(daysSinceStart)
+      const accumulatedReturns = accumulatedAmount - investedAmount
+      const taxAmount = formatValue(accumulatedReturns * (taxRate / 100))
+      const netAccumulatedAmount = formatValue(accumulatedAmount - taxAmount)
+      const netAccumulatedReturns = formatValue(
+        netAccumulatedAmount - investedAmount
+      )
+
+      monthlyInfo.taxRate = taxRate
+      monthlyInfo.taxAmount = taxAmount
+      monthlyInfo.netAccumulatedAmount = netAccumulatedAmount
+      monthlyInfo.netAccumulatedReturns = netAccumulatedReturns
+    }
+
+    monthlyReturns.push(monthlyInfo)
   }
 
   return monthlyReturns

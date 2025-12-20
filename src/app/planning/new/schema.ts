@@ -1,60 +1,28 @@
 import { z } from 'zod'
 
+const numericField = z
+  .union([z.string(), z.number()])
+  .transform((val) => (typeof val === 'string' ? Number.parseFloat(val) : val))
+  .refine((val) => !Number.isNaN(val) && val >= 1, {
+    message: 'O valor deve ser um número válido e maior ou igual a 1.',
+  })
+
+const inflationRateField = z
+  .union([z.string(), z.number()])
+  .transform((val) => (typeof val === 'string' ? Number.parseFloat(val) : val))
+  .refine((val) => !Number.isNaN(val) && val >= 0, {
+    message: 'O valor deve ser um número válido e maior ou igual a 0.',
+  })
+
 export const FormSchema = z.object({
-  investment: z
-    .string({ required_error: 'Insira um valor válido.' })
-    .refine(
-      (value) => {
-        const parsedValue = parseFloat(value)
-        return !isNaN(parsedValue) && parsedValue >= 1
-      },
-      {
-        message: 'O valor deve ser um número válido e maior ou igual a 1.',
-      },
-    )
-    .transform((value) => Number(value)),
-  investmentTime: z
-    .string({ required_error: 'Insira um valor válido.' })
-    .refine(
-      (value) => {
-        const parsedValue = parseFloat(value)
-        return !isNaN(parsedValue) && parsedValue >= 1
-      },
-      {
-        message: 'O valor deve ser um número válido e maior ou igual a 1.',
-      },
-    )
-    .transform((value) => Number(value)),
-
-  investmentRate: z
-    .string({ required_error: 'Insira um valor válido.' })
-    .refine(
-      (value) => {
-        const parsedValue = parseFloat(value)
-        return !isNaN(parsedValue) && parsedValue >= 1
-      },
-      {
-        message: 'O valor deve ser um número válido e maior ou igual a 1.',
-      },
-    )
-    .transform((value) => Number(value)),
-
-  cdiRate: z
-    .string({ required_error: 'Insira um valor válido.' })
-    .refine(
-      (value) => {
-        const parsedValue = parseFloat(value)
-        return !isNaN(parsedValue) && parsedValue >= 1
-      },
-      {
-        message: 'O valor deve ser um número válido e maior ou igual a 1.',
-      },
-    )
-    .transform((value) => Number(value)),
-
+  investment: numericField,
+  investmentTime: numericField,
+  investmentRate: numericField,
+  cdiRate: numericField,
   timeMetric: z.enum(['months', 'years']),
-
   investmentDate: z.date({ required_error: 'Data é um campo obrigatório.' }),
-
   inflation: z.boolean().default(false).optional(),
+  inflationRate: inflationRateField.optional().default(4.5),
+  businessDaysOnly: z.boolean().default(false).optional(),
+  applyTaxes: z.boolean().default(false).optional(),
 })

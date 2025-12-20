@@ -9,10 +9,12 @@ import { NewPlanningFormFieldValue } from './new-planning-form-field-value'
 import { NewPlanningFormFieldTime } from './new-planning-form-field-time'
 import { NewPlanningFormFieldInflation } from './new-planning-form-field-inflation'
 import { NewPlanningFormFieldDate } from './new-planning-form-field-date'
-import { NewPlanningFormTypeInput } from '../new-planning-form'
+import type { NewPlanningFormTypeInput } from '../new-planning-form'
 import { Separator } from '@/components/ui/separator'
 import { NewPlanningFormFieldRate } from './new-planning-form-field-rate'
 import { NewPlanningFormFieldCDI } from './new-planning-form-field-cdi'
+import { NewPlanningFormFieldBusinessDays } from './new-planning-form-field-business-days'
+import { NewPlanningFormFieldTaxes } from './new-planning-form-field-taxes'
 
 export function NewPlanningFormFields() {
   const {
@@ -44,7 +46,11 @@ export function NewPlanningFormFields() {
 
             <Separator />
 
-            <NewPlanningFormFieldInflation />
+            <div className="space-y-4">
+              <NewPlanningFormFieldInflation />
+              <NewPlanningFormFieldBusinessDays />
+              <NewPlanningFormFieldTaxes />
+            </div>
           </div>
         </TabsContent>
       </Tabs>

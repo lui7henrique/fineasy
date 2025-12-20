@@ -28,7 +28,7 @@ export const Header = () => {
             <LineChart size={14} className="mr-1" />
             CDI
             <Separator className="mx-2 h-4" orientation="vertical" />
-            <span className="font-bold"></span> {cdiRate}%
+            <span className="font-bold">{cdiRate}%</span>
           </div>
 
           <ModeToggle />
