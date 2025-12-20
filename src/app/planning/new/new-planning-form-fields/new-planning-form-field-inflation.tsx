@@ -9,13 +9,13 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form'
-import { NewPlanningFormTypeInput } from '../new-planning-form'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Info } from 'lucide-react'
+import type { NewPlanningFormTypeInput } from '../new-planning-form'
 
 export const NewPlanningFormFieldInflation = () => {
   const form = useFormContext<NewPlanningFormTypeInput>()
