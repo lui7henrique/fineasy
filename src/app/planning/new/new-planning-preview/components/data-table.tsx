@@ -1,11 +1,14 @@
 'use client'
 
 import * as React from 'react'
-import {
+import type {
   ColumnDef,
   OnChangeFn,
   SortingState,
   VisibilityState,
+  Table as ReactTableInstance,
+} from '@tanstack/react-table'
+import {
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -13,7 +16,6 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  Table as ReactTableInstance,
   useReactTable,
 } from '@tanstack/react-table'
 
@@ -26,9 +28,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTableViewOptions } from './data-table-view-options'
-import { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
+import type { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Button } from '@/components/ui/button'
 import { InvestmentLineChart } from './investment-line-chart'
 
 interface DataTableProps {
@@ -36,8 +37,7 @@ interface DataTableProps {
   data: MonthlyInvestmentInfo[]
 }
 
-type ViewMode = 'total' | 'parcial'
-type TotalDisplayMode = 'table' | 'chart'
+type ViewMode = 'total' | 'parcial' | 'evolucao'
 
 type GroupedInvestments = {
   year: number
@@ -76,8 +76,6 @@ const groupInvestmentsByYear = (
 
 export function DataTable({ columns, data }: DataTableProps) {
   const [viewMode, setViewMode] = React.useState<ViewMode>('total')
-  const [totalDisplayMode, setTotalDisplayMode] =
-    React.useState<TotalDisplayMode>('table')
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
 
@@ -87,12 +85,6 @@ export function DataTable({ columns, data }: DataTableProps) {
     () => groupInvestmentsByYear(data),
     [data],
   )
-
-  React.useEffect(() => {
-    if (viewMode !== 'total' && totalDisplayMode !== 'table') {
-      setTotalDisplayMode('table')
-    }
-  }, [viewMode, totalDisplayMode])
 
   const table = useReactTable({
     data,
@@ -125,44 +117,19 @@ export function DataTable({ columns, data }: DataTableProps) {
       className="mt-4 space-y-4"
     >
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <TabsList>
-            <TabsTrigger value="total">Total</TabsTrigger>
-            <TabsTrigger value="parcial">Parcial</TabsTrigger>
-          </TabsList>
+        <TabsList>
+          <TabsTrigger value="total">Total</TabsTrigger>
+          <TabsTrigger value="parcial">Parcial</TabsTrigger>
+          <TabsTrigger value="evolucao">Evolução</TabsTrigger>
+        </TabsList>
 
-          {viewMode === 'total' && (
-            <div className="flex flex-wrap items-center gap-2">
-              <Button
-                type="button"
-                size="sm"
-                variant={totalDisplayMode === 'table' ? 'default' : 'outline'}
-                onClick={() => setTotalDisplayMode('table')}
-              >
-                Tabela
-              </Button>
-              <Button
-                type="button"
-                size="sm"
-                variant={totalDisplayMode === 'chart' ? 'default' : 'outline'}
-                onClick={() => setTotalDisplayMode('chart')}
-                disabled={data.length === 0}
-              >
-                Gráfico
-              </Button>
-            </div>
-          )}
-        </div>
-
-        <DataTableViewOptions table={table} />
+        {viewMode !== 'evolucao' && <DataTableViewOptions table={table} />}
       </div>
 
       {viewMode === 'total' ? (
-        totalDisplayMode === 'chart' ? (
-          <InvestmentLineChart data={data} />
-        ) : (
-          <TableContent table={table} columnsLength={columns.length} />
-        )
+        <TableContent table={table} columnsLength={columns.length} />
+      ) : viewMode === 'evolucao' ? (
+        <InvestmentLineChart data={data} />
       ) : groupedByYear.length ? (
         <div className="space-y-8">
           {groupedByYear.map(({ year, months }) => (
