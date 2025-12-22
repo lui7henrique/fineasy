@@ -30,6 +30,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { MonthlyInvestmentInfo } from '@/utils/calculate-monthly-returns'
 import { DataTableViewOptions } from './data-table-view-options'
+import { ExportCSVButton } from './export-csv-button'
 import { InvestmentLineChart } from './investment-line-chart'
 
 interface DataTableProps {
@@ -149,7 +150,10 @@ export function DataTable({ columns, data }: DataTableProps) {
           <TabsTrigger value="evolucao">Evolução</TabsTrigger>
         </TabsList>
 
-        {viewMode !== 'evolucao' && <DataTableViewOptions table={table} />}
+        <div className="flex items-center gap-2">
+          <ExportCSVButton data={data} />
+          {viewMode !== 'evolucao' && <DataTableViewOptions table={table} />}
+        </div>
       </div>
 
       {viewMode === 'total' ? (
