@@ -35,6 +35,7 @@ export const NewPlanningForm = () => {
     resolver: zodResolver(FormSchema),
     mode: 'onChange',
     defaultValues: {
+      initialInvestment: '0',
       investmentTime: '10',
       investmentRate: '100',
       cdiRate: String(cdiRate),
@@ -69,6 +70,7 @@ export const NewPlanningForm = () => {
         investmentRate: parsedForm.investmentRate,
         investmentTimeInMonths: getFormattedInvestmentTime(),
         investmentValue: parsedForm.investment,
+        initialInvestment: parsedForm.initialInvestment,
         applyInflation: parsedForm.inflation ?? false,
         inflationRate: parsedForm.inflationRate ?? 4.5,
         businessDaysOnly: parsedForm.businessDaysOnly ?? false,

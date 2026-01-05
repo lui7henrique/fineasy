@@ -5,16 +5,16 @@ import { useFormContext } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-import { NewPlanningFormFieldValue } from './new-planning-form-field-value'
-import { NewPlanningFormFieldTime } from './new-planning-form-field-time'
-import { NewPlanningFormFieldInflation } from './new-planning-form-field-inflation'
-import { NewPlanningFormFieldDate } from './new-planning-form-field-date'
-import type { NewPlanningFormTypeInput } from '../new-planning-form'
 import { Separator } from '@/components/ui/separator'
-import { NewPlanningFormFieldRate } from './new-planning-form-field-rate'
-import { NewPlanningFormFieldCDI } from './new-planning-form-field-cdi'
+import type { NewPlanningFormTypeInput } from '../new-planning-form'
 import { NewPlanningFormFieldBusinessDays } from './new-planning-form-field-business-days'
+import { NewPlanningFormFieldCDI } from './new-planning-form-field-cdi'
+import { NewPlanningFormFieldInflation } from './new-planning-form-field-inflation'
+import { NewPlanningFormFieldInitialInvestment } from './new-planning-form-field-initial-investment'
+import { NewPlanningFormFieldRate } from './new-planning-form-field-rate'
 import { NewPlanningFormFieldTaxes } from './new-planning-form-field-taxes'
+import { NewPlanningFormFieldTime } from './new-planning-form-field-time'
+import { NewPlanningFormFieldValue } from './new-planning-form-field-value'
 
 export function NewPlanningFormFields() {
   const {
@@ -30,10 +30,10 @@ export function NewPlanningFormFields() {
         </TabsList>
 
         <TabsContent value="basic">
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] gap-4 rounded-md border p-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 rounded-md border p-4">
+            <NewPlanningFormFieldInitialInvestment />
             <NewPlanningFormFieldValue />
             <NewPlanningFormFieldTime />
-            <NewPlanningFormFieldDate />
           </div>
         </TabsContent>
 

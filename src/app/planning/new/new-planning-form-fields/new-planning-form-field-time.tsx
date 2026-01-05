@@ -33,8 +33,8 @@ export const NewPlanningFormFieldTime = () => {
           <FormLabel>Tempo de investimento</FormLabel>
 
           <FormControl>
-            <div className="grid grid-cols-2 w-full gap-4">
-              <Input placeholder="10" type="number" {...field} />
+            <div className="flex w-full gap-2">
+              <Input placeholder="10" type="number" className="flex-1" {...field} />
 
               <FormField
                 control={form.control}
@@ -42,7 +42,7 @@ export const NewPlanningFormFieldTime = () => {
                 defaultValue="years"
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-24">
                       <SelectValue placeholder="Anos" />
                     </SelectTrigger>
 

@@ -20,6 +20,7 @@ export type MonthlyInvestmentInfo = {
 
 type CalculateMonthlyReturnsOptions = {
   investmentValue: number
+  initialInvestment?: number
   investmentTimeInMonths: number
   investmentRate: number
   investmentDate: Date
@@ -42,6 +43,7 @@ export function calculateMonthlyReturns(
 ): MonthlyInvestmentInfo[] {
   const {
     investmentValue,
+    initialInvestment = 0,
     investmentTimeInMonths,
     investmentDate,
     investmentRate,
@@ -52,18 +54,20 @@ export function calculateMonthlyReturns(
     applyTaxes = false,
   } = options
 
-  if (
-    investmentValue <= 0 ||
-    investmentTimeInMonths <= 0 ||
-    investmentRate <= 0
-  ) {
+  if (investmentTimeInMonths <= 0 || investmentRate <= 0) {
     throw new Error(
-      'Investment, investmentTimeInMonths, and cdiRate must be positive values'
+      'investmentTimeInMonths and investmentRate must be positive values'
+    )
+  }
+
+  if (investmentValue <= 0 && initialInvestment <= 0) {
+    throw new Error(
+      'At least one of investmentValue or initialInvestment must be greater than 0'
     )
   }
 
   const monthlyReturns: MonthlyInvestmentInfo[] = []
-  let accumulatedAmount = 0
+  let accumulatedAmount = initialInvestment
 
   const monthlyInflationRate = (1 + inflationRate / 100) ** (1 / 12) - 1
 
@@ -85,7 +89,7 @@ export function calculateMonthlyReturns(
 
     accumulatedAmount += monthlyReturn
 
-    const investedAmount = investmentValue * month
+    const investedAmount = initialInvestment + investmentValue * month
 
     const currentDate = addMonths(startDate, month)
 

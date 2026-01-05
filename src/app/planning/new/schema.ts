@@ -14,8 +14,16 @@ const inflationRateField = z
     message: 'O valor deve ser um número válido e maior ou igual a 0.',
   })
 
+const zeroOrPositiveField = z
+  .union([z.string(), z.number()])
+  .transform((val) => (typeof val === 'string' ? Number.parseFloat(val) : val))
+  .refine((val) => !Number.isNaN(val) && val >= 0, {
+    message: 'O valor deve ser um número válido e maior ou igual a 0.',
+  })
+
 export const FormSchema = z.object({
-  investment: numericField,
+  initialInvestment: zeroOrPositiveField,
+  investment: zeroOrPositiveField,
   investmentTime: numericField,
   investmentRate: numericField,
   cdiRate: numericField,
